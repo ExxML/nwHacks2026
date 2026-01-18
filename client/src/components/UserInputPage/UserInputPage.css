@@ -11,6 +11,10 @@
   padding: 40px 20px 80px;
   position: relative;
   z-index: 1;
+  background: url('../../assets/background.svg') no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  overflow: auto;
 }
 
 .user-input-container {
