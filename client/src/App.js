@@ -6,6 +6,16 @@ import ProfileSetup from './components/ProfileSetup/ProfileSetup';
 import UserInputPage from './components/UserInputPage/UserInputPage';
 import AccountPage from './components/AccountPage/AccountPage';
 
+// Decorative star background component
+const StarDecorations = () => (
+  <div 
+    className="stars-overlay"
+    style={{ 
+      backgroundImage: `url(${process.env.PUBLIC_URL}/stars-overlay.svg)` 
+    }}
+  />
+);
+
 function App() {
   const [showButtons, setShowButtons] = useState(false);
   const [canClick, setCanClick] = useState(false);
@@ -13,7 +23,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [profileComplete, setProfileComplete] = useState(false);
   const [userInputComplete, setUserInputComplete] = useState(false);
-  const [setQueryData] = useState(null);
+  const [queryData, setQueryData] = useState(null);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [isMenuClosing, setIsMenuClosing] = useState(false);
   const [showAccountPage, setShowAccountPage] = useState(false);
@@ -142,6 +152,7 @@ function App() {
   if (loading) {
     return (
       <div className="App">
+        <StarDecorations />
         <div className="loading">Loading...</div>
       </div>
     );
@@ -162,6 +173,7 @@ function App() {
     if (!profileComplete) {
       return (
         <div className="App">
+          <StarDecorations />
           <div className="account-button-container" onMouseLeave={handleMouseLeave}>
             {showAccountMenu && (
               <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
@@ -176,8 +188,8 @@ function App() {
               onClick={toggleAccountMenu}
             >
               <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
-                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="12" cy="8" r="4" stroke="#0c2c55" strokeWidth="2"/>
+                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#0c2c55" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </button>
           </div>
@@ -189,7 +201,8 @@ function App() {
     // Show user input page after profile is complete
     if (!userInputComplete) {
       return (
-        <div className="App">
+        <div className="App app-scrollable">
+          <StarDecorations />
           <div className="account-button-container" onMouseLeave={handleMouseLeave}>
             {showAccountMenu && (
               <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
@@ -204,8 +217,8 @@ function App() {
               onClick={toggleAccountMenu}
             >
               <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
-                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="12" cy="8" r="4" stroke="#0c2c55" strokeWidth="2"/>
+                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#0c2c55" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </button>
           </div>
@@ -217,6 +230,7 @@ function App() {
     // Show dashboard after user input is complete
     return (
       <div className="App">
+        <StarDecorations />
         <div className="account-button-container" onMouseLeave={handleMouseLeave}>
           {showAccountMenu && (
             <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
@@ -231,13 +245,27 @@ function App() {
             onClick={toggleAccountMenu}
           >
             <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
-              <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="12" cy="8" r="4" stroke="#0c2c55" strokeWidth="2"/>
+              <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#0c2c55" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </button>
         </div>
         <div className="dashboard">
-          <h1 className="title">ASCEND.ai</h1>
+          {/* Animated logo header */}
+          <div className="dashboard-logo-header">
+            <div className="dashboard-house-container">
+              <img 
+                src="/house-logo.svg" 
+                alt="Ascend.ai" 
+                className="dashboard-house-icon"
+              />
+            </div>
+            <div className="dashboard-title-container">
+              <h1 className="dashboard-title">ascend.ai</h1>
+              <img src="/title-arrow.svg" alt="" className="dashboard-title-arrow" />
+            </div>
+          </div>
+          
           <div className="user-info">
             <img 
               src={user.photoURL || '/default-avatar.png'} 
@@ -255,51 +283,7 @@ function App() {
   // Landing page for non-authenticated users
   return (
     <div className="App landing-page" onClick={handleScreenClick}>
-      {/* Decorative background elements */}
-      <div className="decorative-elements">
-        {/* Stars */}
-        <svg className="deco-star star-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
-        </svg>
-        <svg className="deco-star star-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
-        </svg>
-        <svg className="deco-star star-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
-        </svg>
-        <svg className="deco-star star-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
-        </svg>
-        {/* Sparkles - filled 4-point stars */}
-        <svg className="deco-sparkle sparkle-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
-        </svg>
-        <svg className="deco-sparkle sparkle-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
-        </svg>
-        <svg className="deco-sparkle sparkle-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
-        </svg>
-        <svg className="deco-sparkle sparkle-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
-        </svg>
-        {/* Shooting stars */}
-        <svg className="deco-shooting shooting-1" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
-          <path d="M120 20C120 20 80 15 40 18C20 19 0 25 0 25" stroke="#0c2c55" strokeWidth="2" fill="none" strokeLinecap="round"/>
-          <circle cx="0" cy="25" r="4" fill="#0c2c55"/>
-        </svg>
-        <svg className="deco-shooting shooting-2" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
-          <path d="M120 20C120 20 80 15 40 18C20 19 0 25 0 25" stroke="#0c2c55" strokeWidth="2" fill="none" strokeLinecap="round"/>
-          <circle cx="0" cy="25" r="4" fill="#0c2c55"/>
-        </svg>
-        {/* 5-point outline stars */}
-        <svg className="deco-5star five-star-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
-        </svg>
-        <svg className="deco-5star five-star-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
-        </svg>
-      </div>
+      <StarDecorations />
       
       <div className={`content-container ${showButtons ? 'show-buttons' : ''}`}>
         {/* Logo header - house icon with sliding text */}
