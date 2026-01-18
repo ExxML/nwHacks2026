@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Microsoft Himalaya';
+  src: url('./assets/microsoft-himalaya.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .App {
   min-height: 100vh;
   background-image: url('./assets/background.svg');
@@ -19,10 +26,10 @@
 /* Top left logo styling */
 .top-left-logo {
   position: fixed;
-  top: 2rem;
-  left: 2rem;
-  width: 60px;
-  height: 60px;
+  top: 0.9rem;
+  left: 0.7rem;
+  width: 260px;
+  height: 100px;
   z-index: 100;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
@@ -309,10 +316,10 @@
 }
 
 .brand-name {
-  font-size: 4rem;
+  font-size: 6.5rem;
   font-weight: 400;
   color: #0c2c55;
-  font-family: 'Georgia', serif;
+  font-family: 'Microsoft Himalaya', serif;
   letter-spacing: -0.05em;
   opacity: 0;
   max-width: 0;
@@ -324,7 +331,7 @@
 
 .brand-name.visible {
   opacity: 1;
-  max-width: 450px;
+  max-width: 550px;
 }
 
 .brand-arrow {
@@ -808,13 +815,6 @@
   .account-button-container {
     top: 1rem;
     right: 1rem;
-  }
-
-  .top-left-logo {
-    top: 1rem;
-    left: 1rem;
-    width: 40px;
-    height: 40px;
   }
 
   .account-button {

@@ -1,10 +1,16 @@
-# Ascend.ai
+# ascend.ai - A Personalized Financial Advisor Engine
 
-**A personalized financial decision advisor that generates actionable roadmaps based on your unique financial profile.**
+<div align="center">
+  <img src="assets/landing thumbnaiil.png" alt="Ascend.ai - Your personal financial decision advisor" width="800">
+</div>
+
+<div align="center">
+
+**A personalized financial decision advisor that generates actionable roadmaps based on your financial profile.**
 
 Ascend.ai is a full-stack application featuring a custom-built recommendation engine that analyzes user financial profiles and generates personalized, staged roadmaps with logical dependencies. Built for nwHacks 2026.
 
----
+</div>
 
 ## Table of Contents
 
@@ -25,6 +31,10 @@ Ascend.ai is a full-stack application featuring a custom-built recommendation en
 ---
 
 ## Overview
+
+<div align="center">
+  <img src="assets/landing.png" alt="Ascend.ai Overview" width="800">
+</div>
 
 Ascend.ai solves the problem of inaccessible, expensive, or generic financial advice by providing a personalized recommendation engine that adapts to each user's unique financial situation. The system combines structured heuristic logic with intelligent personalization to deliver transparent, actionable financial guidance.
 
@@ -65,41 +75,9 @@ Ascend.ai solves the problem of inaccessible, expensive, or generic financial ad
 
 ### System Overview
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    React Frontend                        │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │ Landing Page │  │ Profile Setup│  │ Visualization│  │
-│  └──────────────┘  └──────────────┘  └──────────────┘  │
-└───────────────────────┬─────────────────────────────────┘
-                        │ HTTP/REST
-                        ▼
-┌─────────────────────────────────────────────────────────┐
-│              Flask REST API (Port 5001)                 │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │  POST /api/recommend                             │  │
-│  │  GET  /api/health                                │  │
-│  └──────────────────────────────────────────────────┘  │
-└───────────────────────┬─────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────────┐
-│              ASCEND ENGINE (Core Innovation)             │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │ 1. Input Normalizer & Profile Analyzer            │  │
-│  │ 2. Action Registry System (50+ actions)           │  │
-│  │ 3. Multi-Factor Scorer (8 dimensions)            │  │
-│  │ 4. DAG Builder & Optimizer                       │  │
-│  │ 5. Recommendation Engine                         │  │
-│  │ 6. Personalization Layer                         │  │
-│  └──────────────────────────────────────────────────┘  │
-└───────────────────────┬─────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────────┐
-│         Personalized Financial Roadmap Output            │
-└─────────────────────────────────────────────────────────┘
-```
+<div align="center">
+  <img src="assets/flowchart.png" alt="Ascend.ai System Architecture Flowchart" width="800">
+</div>
 
 ### Engine Components
 
@@ -629,16 +607,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Inspired by the need for accessible, personalized financial advice
 - Thanks to the open-source community for excellent tools and libraries
 
----
-
-## Contact & Support
-
-For questions, issues, or contributions:
-
-- **GitHub Issues**: [Create an issue](https://github.com/yourusername/ascend.ai/issues)
-- **Email**: [your-email@example.com]
-
----
 
 ## Roadmap
 
@@ -662,6 +630,12 @@ For questions, issues, or contributions:
 
 ---
 
-**Built with ❤️ for nwHacks 2026**
+<div align="center">
 
-*The Engine is the Innovation. The UI is the Experience. Together, they're Ascend.ai.*
+*ascend.ai allows you to make the right steps so that you can reach your next financial peak.*
+
+</div>
+
+<div align="center">
+  <img src="assets/footer.png" alt="Ascend.ai Footer" width="800">
+</div>
