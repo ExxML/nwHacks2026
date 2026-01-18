@@ -25,8 +25,8 @@ class RecommendationEngine:
     """
     
     # Maximum recommendations per horizon
-    MAX_PER_HORIZON = 5
-    MAX_TOTAL = 20
+    MAX_PER_HORIZON = 12
+    MAX_TOTAL = 40
     
     def __init__(self):
         self.dag = DAGBuilder()
