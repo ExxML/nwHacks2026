@@ -186,6 +186,108 @@
   z-index: 1;
 }
 
+/* Account button in top-right corner */
+.account-button-container {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+}
+
+.account-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #EDEDCE;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.account-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.account-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.account-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: slideIn 0.3s ease-out;
+  margin-right: 1.1rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+.account-menu.closing {
+  animation: slideOut 0.3s ease-out forwards;
+}
+
+.account-menu-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #EDEDCE;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  background: rgba(237, 237, 206, 0.1);
+  color: #EDEDCE;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.account-menu-button:hover {
+  background: rgba(237, 237, 206, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.account-menu-button.logout {
+  background: rgba(220, 53, 69, 0.8);
+  border-color: #dc3545;
+  color: #EDEDCE;
+}
+
+.account-menu-button.logout:hover {
+  background: #dc3545;
+  border-color: #c82333;
+  transform: translateY(-2px);
+}
+
 /* Dashboard styles */
 .dashboard {
   display: flex;
@@ -280,5 +382,20 @@
   .logout-button {
     padding: 0.8rem 2rem;
     font-size: 1rem;
+  }
+
+  .account-button-container {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .account-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .account-menu-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
   }
 }

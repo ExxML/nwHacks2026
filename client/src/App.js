@@ -2,12 +2,16 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { auth, signInWithGoogle, logOut } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import ProfileSetup from './components/ProfileSetup/ProfileSetup';
 
 function App() {
   const [showButtons, setShowButtons] = useState(false);
   const [canClick, setCanClick] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profileComplete, setProfileComplete] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [isMenuClosing, setIsMenuClosing] = useState(false);
 
   useEffect(() => {
     // Enable clicking after initial animation completes
@@ -19,6 +23,9 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
+      // Ensure menu is closed when user changes
+      setShowAccountMenu(false);
+      setIsMenuClosing(false);
     });
 
     return () => {
@@ -61,9 +68,39 @@ function App() {
     try {
       await logOut();
       setShowButtons(false);
+      setProfileComplete(false);
     } catch (error) {
       console.error("Logout failed:", error);
     }
+  };
+
+  const toggleAccountMenu = () => {
+    if (showAccountMenu) {
+      // Start closing animation
+      setIsMenuClosing(true);
+      setTimeout(() => {
+        setShowAccountMenu(false);
+        setIsMenuClosing(false);
+      }, 300); // Match animation duration
+    } else {
+      setShowAccountMenu(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (showAccountMenu && !isMenuClosing) {
+      setIsMenuClosing(true);
+      setTimeout(() => {
+        setShowAccountMenu(false);
+        setIsMenuClosing(false);
+      }, 300); // Match animation duration
+    }
+  };
+
+  const handleProfileComplete = (profileData) => {
+    console.log('Profile data:', profileData);
+    // TODO: Save profile data to database
+    setProfileComplete(true);
   };
 
   if (loading) {
@@ -74,10 +111,58 @@ function App() {
     );
   }
 
-  // If user is logged in, show dashboard
+  // If user is logged in, show profile setup or dashboard
   if (user) {
+    // Show profile setup if not completed
+    if (!profileComplete) {
+      return (
+        <div className="App">
+          <div className="account-button-container" onMouseLeave={handleMouseLeave}>
+            {showAccountMenu && (
+              <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
+                <button className="account-menu-button">Account</button>
+                <button className="account-menu-button logout" onClick={handleLogout}>
+                  Log Out
+                </button>
+              </div>
+            )}
+            <button 
+              className="account-button" 
+              onClick={toggleAccountMenu}
+            >
+              <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
+                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <ProfileSetup onComplete={handleProfileComplete} />
+        </div>
+      );
+    }
+
+    // Show dashboard after profile is complete
     return (
       <div className="App">
+        <div className="account-button-container" onMouseLeave={handleMouseLeave}>
+          {showAccountMenu && (
+            <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
+              <button className="account-menu-button">Account</button>
+              <button className="account-menu-button logout" onClick={handleLogout}>
+                Log Out
+              </button>
+            </div>
+          )}
+          <button 
+            className="account-button" 
+            onClick={toggleAccountMenu}
+          >
+            <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
+              <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
         <div className="dashboard">
           <h1 className="title">ASCEND.ai</h1>
           <div className="user-info">
@@ -89,9 +174,6 @@ function App() {
             <h2 className="welcome-text">Welcome, {user.displayName || 'User'}!</h2>
             <p className="user-email">{user.email}</p>
           </div>
-          <button className="logout-button" onClick={handleLogout}>
-            Sign Out
-          </button>
         </div>
       </div>
     );

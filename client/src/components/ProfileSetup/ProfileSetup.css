@@ -1,0 +1,167 @@
+.profile-card-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  position: relative;
+}
+
+.profile-card-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.profile-card-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.profile-card-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-weight: 400;
+}
+
+.profile-card-input {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.profile-dropdown,
+.profile-text-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  font-family: inherit;
+}
+
+.profile-dropdown {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+  padding-right: 50px;
+  overflow: hidden;
+}
+
+.profile-dropdown:hover,
+.profile-text-input:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.profile-dropdown:focus {
+  border-color: rgba(100, 150, 255, 0.6);
+  background-color: rgba(30, 40, 60, 0.95);
+  background-image: none;
+  box-shadow: 0 0 0 4px rgba(100, 150, 255, 0.1);
+}
+
+.profile-text-input:focus {
+  border-color: rgba(100, 150, 255, 0.6);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(100, 150, 255, 0.1);
+}
+
+.profile-dropdown option {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  ),
+  rgba(30, 40, 60, 0.95);
+  color: #ffffff;
+  padding: 12px;
+}
+
+.profile-dropdown option:hover,
+.profile-dropdown option:checked {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.18) 100%
+  ),
+  rgba(35, 45, 70, 0.98);
+}
+
+.profile-text-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.profile-submit-button {
+  margin-top: 20px;
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.profile-submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.profile-submit-button:active {
+  transform: translateY(0);
+}
+
+.profile-submit-button.disabled {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+  cursor: default;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.profile-card-progress {
+  position: absolute;
+  bottom: 30px;
+  right: 40px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+}
+
+/* Scrollbar styling for dropdown */
+.profile-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.profile-dropdown::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.profile-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.profile-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
