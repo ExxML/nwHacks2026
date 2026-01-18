@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { auth, signInWithGoogle, logOut } from './firebase';
+import { auth, signInWithGoogle, logOut, saveUserProfile, checkProfileCompleted } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import ProfileSetup from './components/ProfileSetup/ProfileSetup';
 
@@ -20,12 +20,20 @@ function App() {
     }, 1500);
 
     // Listen for auth state changes
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
       // Ensure menu is closed when user changes
       setShowAccountMenu(false);
       setIsMenuClosing(false);
+      
+      // Check if user has completed their profile
+      if (currentUser) {
+        const isProfileComplete = await checkProfileCompleted(currentUser.uid);
+        setProfileComplete(isProfileComplete);
+      } else {
+        setProfileComplete(false);
+      }
+      setLoading(false);
     });
 
     return () => {
@@ -97,10 +105,16 @@ function App() {
     }
   };
 
-  const handleProfileComplete = (profileData) => {
-    console.log('Profile data:', profileData);
-    // TODO: Save profile data to database
-    setProfileComplete(true);
+  const handleProfileComplete = async (profileData) => {
+    try {
+      // Save profile data to Firestore
+      await saveUserProfile(user.uid, profileData);
+      console.log('Profile saved to database:', profileData);
+      setProfileComplete(true);
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      alert('Failed to save profile. Please try again.');
+    }
   };
 
   if (loading) {
