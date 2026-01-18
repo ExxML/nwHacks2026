@@ -235,7 +235,7 @@ body:has(.app-scrollable) {
 .account-menu {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.00rem;
   animation: slideIn 0.3s ease-out;
   margin-right: 1.1rem;
 }
