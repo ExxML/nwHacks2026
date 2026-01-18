@@ -15,54 +15,131 @@
   position: relative;
 }
 
-.App.app-scrollable {
-  overflow-y: auto;
-  overflow-x: hidden;
-  align-items: flex-start;
-  cursor: default;
-  height: 100vh;
+/* Landing page specific light gradient */
+.App.landing-page {
+  background: radial-gradient(ellipse at center, #f0f7fa 0%, #d4e8ef 30%, #a8d4e0 60%, #7ec4d4 100%);
 }
 
-html:has(.app-scrollable),
-body:has(.app-scrollable) {
-  overflow: auto;
-}
-
-/* Animated Cloud Background */
-.App::before,
-.App::after {
-  content: '';
+/* Decorative elements container */
+.decorative-elements {
   position: absolute;
-  width: 200%;
-  height: 100%;
   top: 0;
-  left: -50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   z-index: 0;
-  background-image: 
-    radial-gradient(ellipse 200px 100px at 20% 30%, rgba(237, 237, 206, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse 300px 150px at 60% 70%, rgba(237, 237, 206, 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse 250px 120px at 80% 20%, rgba(98, 159, 173, 0.25) 0%, transparent 50%),
-    radial-gradient(ellipse 180px 90px at 40% 80%, rgba(237, 237, 206, 0.35) 0%, transparent 50%),
-    radial-gradient(ellipse 220px 110px at 10% 60%, rgba(98, 159, 173, 0.2) 0%, transparent 50%);
-  animation: cloudDrift 60s linear infinite;
+  overflow: hidden;
 }
 
-.App::after {
-  background-image: 
-    radial-gradient(ellipse 280px 140px at 30% 50%, rgba(237, 237, 206, 0.25) 0%, transparent 50%),
-    radial-gradient(ellipse 200px 100px at 70% 30%, rgba(98, 159, 173, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse 240px 120px at 50% 80%, rgba(237, 237, 206, 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse 190px 95px at 85% 60%, rgba(98, 159, 173, 0.25) 0%, transparent 50%);
-  animation: cloudDrift 80s linear infinite reverse;
+/* 4-point stars (outline) */
+.deco-star {
+  position: absolute;
+  opacity: 0.7;
 }
 
-@keyframes cloudDrift {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(50%);
-  }
+.star-1 {
+  width: 30px;
+  height: 30px;
+  top: 15%;
+  left: 8%;
+}
+
+.star-2 {
+  width: 20px;
+  height: 20px;
+  top: 70%;
+  left: 5%;
+}
+
+.star-3 {
+  width: 25px;
+  height: 25px;
+  top: 80%;
+  right: 12%;
+}
+
+.star-4 {
+  width: 18px;
+  height: 18px;
+  top: 25%;
+  right: 15%;
+}
+
+/* Sparkles (filled 4-point stars) */
+.deco-sparkle {
+  position: absolute;
+  opacity: 0.8;
+}
+
+.sparkle-1 {
+  width: 16px;
+  height: 16px;
+  top: 30%;
+  left: 12%;
+}
+
+.sparkle-2 {
+  width: 12px;
+  height: 12px;
+  top: 55%;
+  left: 3%;
+}
+
+.sparkle-3 {
+  width: 14px;
+  height: 14px;
+  top: 65%;
+  right: 8%;
+}
+
+.sparkle-4 {
+  width: 10px;
+  height: 10px;
+  top: 20%;
+  right: 5%;
+}
+
+/* Shooting stars */
+.deco-shooting {
+  position: absolute;
+  opacity: 0.6;
+}
+
+.shooting-1 {
+  width: 150px;
+  height: 50px;
+  top: 8%;
+  right: 5%;
+  transform: rotate(-15deg);
+}
+
+.shooting-2 {
+  width: 120px;
+  height: 40px;
+  top: 12%;
+  left: 10%;
+  transform: rotate(25deg) scaleX(-1);
+}
+
+/* 5-point outline stars */
+.deco-5star {
+  position: absolute;
+  opacity: 0.5;
+}
+
+.five-star-1 {
+  width: 50px;
+  height: 50px;
+  bottom: 15%;
+  left: 5%;
+}
+
+.five-star-2 {
+  width: 40px;
+  height: 40px;
+  bottom: 20%;
+  right: 3%;
 }
 
 .content-container {
@@ -93,6 +170,29 @@ body:has(.app-scrollable) {
   animation: none;
 }
 
+.landing-page .content-container {
+  transform: translateY(0);
+}
+
+.landing-page .content-container.show-buttons {
+  transform: translateY(-40px) !important;
+}
+
+@keyframes floatUpLanding {
+  from {
+    transform: translateY(60vh);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.landing-page .content-container {
+  animation: floatUpLanding 1.5s ease-out;
+}
+
 .title {
   font-size: 4rem;
   font-weight: 700;
@@ -119,14 +219,144 @@ body:has(.app-scrollable) {
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
 }
 
+/* Logo header - house icon with sliding brand name */
+.logo-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-header.expanded {
+  gap: 0.5rem;
+}
+
+.house-icon-container {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-header.expanded .house-icon-container {
+  width: 120px;
+  height: 120px;
+}
+
+.house-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(12, 44, 85, 0.15));
+}
+
+.brand-name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.brand-name {
+  font-size: 4rem;
+  font-weight: 400;
+  color: #0c2c55;
+  font-family: 'Georgia', serif;
+  letter-spacing: -0.05em;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+}
+
+.brand-name.visible {
+  opacity: 1;
+  max-width: 450px;
+}
+
+.brand-arrow {
+  width: 0;
+  height: 16px;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.5s;
+  margin-top: -4px;
+  object-fit: contain;
+}
+
+.brand-arrow.visible {
+  width: 260px;
+  opacity: 1;
+}
+
+/* Subtitle styling */
+.subtitle {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #0c2c55;
+  font-family: 'Georgia', serif;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.6s ease-out;
+  transition-delay: 0.5s;
+}
+
+.subtitle.visible {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+/* Tagline styling */
+.tagline-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.tagline {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #0c2c55;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: 'Georgia', serif;
+  text-align: center;
+  position: relative;
+  letter-spacing: -0.03em;
+}
+
+.tagline em {
+  font-style: italic;
+  font-family: 'Brush Script MT', 'Segoe Script', cursive;
+  font-size: 2.2rem;
+}
+
+.tagline-arrow {
+  width: 220px;
+  height: 16px;
+  margin-top: -2px;
+  margin-bottom: 0.25rem;
+  opacity: 0.9;
+  object-fit: contain;
+}
+
 .button-container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
   opacity: 0;
-  transform: translateY(100px);
+  transform: translateY(60px);
   transition: all 0.8s ease-out;
+  transition-delay: 0.3s;
   pointer-events: none;
 }
 
@@ -182,6 +412,29 @@ body:has(.app-scrollable) {
   filter: brightness(1.15);
 }
 
+/* Landing page specific button styles */
+.landing-page .login-button {
+  background: rgba(255, 255, 255, 0.7);
+  color: #0C2C55;
+  border: 2px solid rgba(12, 44, 85, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.landing-page .login-button:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: #0C2C55;
+}
+
+.landing-page .signup-button {
+  background: rgba(12, 44, 85, 0.8);
+  color: #ffffff;
+  border: 2px solid transparent;
+}
+
+.landing-page .signup-button:hover {
+  background: #0C2C55;
+}
+
 .click-hint {
   position: absolute;
   bottom: 3rem;
@@ -190,6 +443,12 @@ body:has(.app-scrollable) {
   opacity: 0.7;
   pointer-events: none;
   z-index: 1;
+}
+
+/* Landing page click hint */
+.landing-page .click-hint {
+  color: #0c2c55;
+  opacity: 0.6;
 }
 
 /* Loading state */
@@ -410,5 +669,68 @@ body:has(.app-scrollable) {
   .account-menu-button {
     padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
+  }
+
+  .house-icon-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .logo-header.expanded .house-icon-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .brand-name {
+    font-size: 2.5rem;
+    letter-spacing: -0.04em;
+  }
+
+  .brand-name.visible {
+    max-width: 280px;
+  }
+
+  .brand-name {
+    font-size: 2.5rem;
+    letter-spacing: -0.04em;
+  }
+
+  .brand-name.visible {
+    max-width: 280px;
+  }
+
+  .brand-arrow.visible {
+    width: 170px;
+    height: 14px;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    padding: 0 1rem;
+  }
+
+  .tagline {
+    font-size: 1.4rem;
+    padding: 0 1rem;
+  }
+
+  .tagline em {
+    font-size: 1.6rem;
+  }
+
+  .tagline-arrow {
+    width: 160px;
+    height: 12px;
+  }
+
+  /* Hide some decorative elements on mobile */
+  .shooting-2,
+  .star-4,
+  .sparkle-4 {
+    display: none;
+  }
+
+  .shooting-1 {
+    width: 100px;
   }
 }

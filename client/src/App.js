@@ -253,16 +253,81 @@ function App() {
 
   // Landing page for non-authenticated users
   return (
-    <div className="App" onClick={handleScreenClick}>
+    <div className="App landing-page" onClick={handleScreenClick}>
+      {/* Decorative background elements */}
+      <div className="decorative-elements">
+        {/* Stars */}
+        <svg className="deco-star star-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
+        </svg>
+        <svg className="deco-star star-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
+        </svg>
+        <svg className="deco-star star-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
+        </svg>
+        <svg className="deco-star star-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
+        </svg>
+        {/* Sparkles - filled 4-point stars */}
+        <svg className="deco-sparkle sparkle-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
+        </svg>
+        <svg className="deco-sparkle sparkle-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
+        </svg>
+        <svg className="deco-sparkle sparkle-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
+        </svg>
+        <svg className="deco-sparkle sparkle-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="#0c2c55"/>
+        </svg>
+        {/* Shooting stars */}
+        <svg className="deco-shooting shooting-1" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120 20C120 20 80 15 40 18C20 19 0 25 0 25" stroke="#0c2c55" strokeWidth="2" fill="none" strokeLinecap="round"/>
+          <circle cx="0" cy="25" r="4" fill="#0c2c55"/>
+        </svg>
+        <svg className="deco-shooting shooting-2" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120 20C120 20 80 15 40 18C20 19 0 25 0 25" stroke="#0c2c55" strokeWidth="2" fill="none" strokeLinecap="round"/>
+          <circle cx="0" cy="25" r="4" fill="#0c2c55"/>
+        </svg>
+        {/* 5-point outline stars */}
+        <svg className="deco-5star five-star-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
+        </svg>
+        <svg className="deco-5star five-star-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#0c2c55" strokeWidth="1.5" fill="none"/>
+        </svg>
+      </div>
+      
       <div className={`content-container ${showButtons ? 'show-buttons' : ''}`}>
-        <h1 className="title">ASCEND.ai</h1>
-        <div className="image-container">
-          <img 
-            src="/island.png" 
-            alt="Ascend Island" 
-            className="island-image"
-          />
+        {/* Logo header - house icon with sliding text */}
+        <div className={`logo-header ${showButtons ? 'expanded' : ''}`}>
+          <div className="house-icon-container">
+            <img 
+              src="/logo.svg" 
+              alt="Ascend.ai Logo" 
+              className="house-icon"
+            />
+          </div>
+          <div className="brand-name-container">
+            <h1 className={`brand-name ${showButtons ? 'visible' : ''}`}>ascend.ai</h1>
+            <img src="/arrow-brand.svg" alt="" className={`brand-arrow ${showButtons ? 'visible' : ''}`} />
+          </div>
         </div>
+        
+        {/* Subtitle - fades in after click */}
+        <p className={`subtitle ${showButtons ? 'visible' : ''}`}>
+          Your personal financial decision advisor.
+        </p>
+        
+        {/* Initial tagline - hidden after click */}
+        {!showButtons && (
+          <div className="tagline-container">
+            <h2 className="tagline">how would <em>you</em> like to ascend further?</h2>
+            <img src="/arrow.svg" alt="" className="tagline-arrow" />
+          </div>
+        )}
         
         <div className={`button-container ${showButtons ? 'visible' : ''}`}>
           <button className="auth-button login-button" onClick={handleGoogleLogin}>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1110.67 1080">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #0c2c55;
+      }
+
+      .cls-2 {
+        font-family: Microsoft-Himalaya, 'Microsoft Himalaya';
+        font-size: 529.91px;
+        letter-spacing: -.05em;
+      }
+    </style>
+  </defs>
+  <text class="cls-2" transform="translate(6.28 616.22)"><tspan x="0" y="0">ascend.ai</tspan></text>
+  <path class="cls-1" d="M63.11,666.32c228.84,6.03,563.95,18.48,207.09,34.09-38.84,1.7-205.09,6.06-211.3,6.78-9.2,1.06-3.31,4.19,16.57,4.67,32.96.81,274.26-1.15,327.75-1.62,154.75-1.35,528.41-5.26,618.03-15.43,76.07-8.63-43.68-18.32-126.06-24.02-78.21-5.42-219.83-10.95-282.89-16.17"/>
+</svg>
