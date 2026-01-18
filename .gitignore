@@ -1,5 +1,5 @@
 # Pycache
-/__pycache__/
+\__pycache__
 
 # Dependencies
 npm-debug.log*
