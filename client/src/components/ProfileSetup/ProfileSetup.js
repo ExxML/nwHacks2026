@@ -1,5 +1,5 @@
 import './ProfileSetup.css';
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import ScrollableCards from '../ScrollableCards/ScrollableCards';
 
 const profileQuestions = [
@@ -22,7 +22,7 @@ const profileQuestions = [
     id: 'location',
     title: 'Location',
     type: 'text',
-    placeholder: 'Enter city or postal code'
+    placeholder: 'Enter your city'
   },
   {
     id: 'propertyValue',
@@ -60,7 +60,7 @@ const profileQuestions = [
   {
     id: 'investments',
     title: 'Investments',
-    subtitle: 'Current value of all investments',
+    subtitle: 'Current value of all investments (stocks, bonds, etc.)',
     options: [
       'Prefer not to say',
       '$0',
@@ -106,6 +106,95 @@ const profileQuestions = [
 
 function ProfileSetup({ onComplete }) {
   const [profileData, setProfileData] = useState({});
+  const [citySuggestions, setCitySuggestions] = useState([]);
+  const [cityInput, setCityInput] = useState('');
+  const [isLoadingCities, setIsLoadingCities] = useState(false);
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
+  const [citySelected, setCitySelected] = useState(false);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const debounceTimer = useRef(null);
+  const cityInputRef = useRef(null);
+  const previousCardIndex = useRef(0);
+
+  // Fetch city suggestions from API
+  const fetchCitySuggestions = async (query) => {
+    if (!query || query.length < 2) {
+      setCitySuggestions([]);
+      return;
+    }
+
+    setIsLoadingCities(true);
+    try {
+      // Using Nominatim API (OpenStreetMap) - free and no API key required
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=5&featuretype=city`
+      );
+      const data = await response.json();
+      
+      // Filter and format results to show cities
+      const cities = data
+        .filter(item => 
+          item.address && 
+          (item.type === 'city' || 
+           item.type === 'town' || 
+           item.type === 'village' || 
+           item.address.city || 
+           item.address.town || 
+           item.address.village)
+        )
+        .map(item => {
+          const city = item.address.city || item.address.town || item.address.village || item.name;
+          const state = item.address.state || '';
+          const country = item.address.country || '';
+          return {
+            displayName: `${city}${state ? ', ' + state : ''}${country ? ', ' + country : ''}`,
+            city: city,
+            fullAddress: item.display_name
+          };
+        })
+        .slice(0, 5); // Limit to maximum 5 items
+      
+      setCitySuggestions(cities);
+    } catch (error) {
+      console.error('Error fetching city suggestions:', error);
+      setCitySuggestions([]);
+    } finally {
+      setIsLoadingCities(false);
+    }
+  };
+
+  // Debounce city input
+  useEffect(() => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    if (cityInput && !citySelected) {
+      debounceTimer.current = setTimeout(() => {
+        fetchCitySuggestions(cityInput);
+      }, 300);
+    }
+
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, [cityInput, citySelected]);
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cityInputRef.current && !cityInputRef.current.contains(event.target)) {
+        setShowCitySuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleValueChange = (questionId, value, event) => {
     setProfileData(prev => ({
@@ -117,6 +206,51 @@ function ProfileSetup({ onComplete }) {
       event.target.blur();
     }
   };
+
+  const handleCityInputChange = (e) => {
+    const value = e.target.value;
+    setCityInput(value);
+    setCitySelected(false);
+    setShowCitySuggestions(true);
+    
+    // Clear the location in profileData if user is typing
+    setProfileData(prev => ({
+      ...prev,
+      location: ''
+    }));
+  };
+
+  const handleCitySelect = useCallback((city) => {
+    setCityInput(city.displayName);
+    setCitySelected(true);
+    setShowCitySuggestions(false);
+    setCitySuggestions([]);
+    
+    // Set the location in profileData
+    setProfileData(prev => ({
+      ...prev,
+      location: city.displayName
+    }));
+  }, []);
+
+  const autoSelectFirstCity = useCallback(() => {
+    // Auto-select first city if user has typed but not selected
+    if (cityInput && !citySelected && citySuggestions.length > 0) {
+      handleCitySelect(citySuggestions[0]);
+    }
+  }, [cityInput, citySelected, citySuggestions, handleCitySelect]);
+
+  // Auto-select first city when leaving location card (index 1)
+  useEffect(() => {
+    const locationCardIndex = 1; // Location is the second card (index 1)
+    
+    // If we're moving away from the location card
+    if (previousCardIndex.current === locationCardIndex && currentCardIndex !== locationCardIndex) {
+      autoSelectFirstCity();
+    }
+    
+    previousCardIndex.current = currentCardIndex;
+  }, [currentCardIndex, autoSelectFirstCity]);
 
   const handleSubmit = () => {
     // Check if all required fields are filled
@@ -134,8 +268,17 @@ function ProfileSetup({ onComplete }) {
     const currentValue = profileData[question.id];
     const allFilled = profileQuestions.every(q => profileData[q.id]);
 
+    // Update current card index when card is selected
+    if (isSelected && currentCardIndex !== index) {
+      setCurrentCardIndex(index);
+    }
+
     const handleKeyDown = (e) => {
       if (e.key === 'Enter' && !isLastCard) {
+        // Auto-select first city if on location field
+        if (question.id === 'location') {
+          autoSelectFirstCity();
+        }
         goToNextCard();
       }
     };
@@ -151,14 +294,49 @@ function ProfileSetup({ onComplete }) {
 
         <div className="profile-card-input">
           {question.type === 'text' ? (
-            <input
-              type="text"
-              className="profile-text-input"
-              placeholder={question.placeholder}
-              value={currentValue || ''}
-              onChange={(e) => handleValueChange(question.id, e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
+            question.id === 'location' ? (
+              <div className="city-autocomplete-container" ref={cityInputRef}>
+                <input
+                  type="text"
+                  className="profile-text-input"
+                  placeholder={question.placeholder}
+                  value={cityInput}
+                  onChange={handleCityInputChange}
+                  onFocus={() => setShowCitySuggestions(true)}
+                  onKeyDown={handleKeyDown}
+                />
+                {showCitySuggestions && (cityInput.length >= 2) && (
+                  <div className="city-suggestions-dropdown">
+                    {isLoadingCities ? (
+                      <div className="city-suggestion-item loading">Loading...</div>
+                    ) : citySuggestions.length > 0 ? (
+                      citySuggestions.map((city, idx) => (
+                        <div
+                          key={idx}
+                          className="city-suggestion-item"
+                          onClick={() => handleCitySelect(city)}
+                        >
+                          {city.displayName}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="city-suggestion-item no-results">
+                        No cities found. Try a different search.
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <input
+                type="text"
+                className="profile-text-input"
+                placeholder={question.placeholder}
+                value={currentValue || ''}
+                onChange={(e) => handleValueChange(question.id, e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+            )
           ) : (
             <select
               className="profile-dropdown"

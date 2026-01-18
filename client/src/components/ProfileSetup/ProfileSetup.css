@@ -168,3 +168,86 @@
 .profile-dropdown::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
+
+/* City Autocomplete Styles */
+.city-autocomplete-container {
+  position: relative;
+  width: 100%;
+}
+
+.city-suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background: rgba(30, 40, 60, 0.98);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.city-suggestion-item {
+  padding: 14px 20px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.city-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.city-suggestion-item:hover {
+  background: rgba(100, 150, 255, 0.2);
+}
+
+.city-suggestion-item.loading,
+.city-suggestion-item.no-results {
+  cursor: default;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  font-style: normal;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.city-suggestion-item.loading:hover,
+.city-suggestion-item.no-results:hover {
+  background: transparent;
+}
+
+.city-validation-message {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  text-align: left;
+  padding-left: 4px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hide scrollbar for city suggestions */
+.city-suggestions-dropdown::-webkit-scrollbar {
+  display: none;
+}
+
+.city-suggestions-dropdown {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

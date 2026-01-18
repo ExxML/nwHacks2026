@@ -3,14 +3,22 @@ import { useState, useEffect, useRef } from 'react';
 
 function ScrollableCards({ numberOfCards, renderCardContent, cardsData }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isScrollingActive, setIsScrollingActive] = useState(false);
   const containerRef = useRef(null);
   const isScrolling = useRef(false);
+  const scrollTimeout = useRef(null);
   const cards = Array(numberOfCards).fill(null);
 
+  // Separate effect for motion blur timeout cleanup on unmount only
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    return () => {
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
+  }, []);
 
+  useEffect(() => {
     const handleWheel = (e) => {
       e.preventDefault();
       
@@ -21,19 +29,27 @@ function ScrollableCards({ numberOfCards, renderCardContent, cardsData }) {
       
       if (newIndex >= 0 && newIndex < cards.length) {
         isScrolling.current = true;
+        setIsScrollingActive(true);
         setSelectedIndex(newIndex);
         
-        // Very short cooldown for fast scrolling
-        setTimeout(() => {
+        // Clear existing timeout
+        if (scrollTimeout.current) {
+          clearTimeout(scrollTimeout.current);
+        }
+        
+        // Very short cooldown for fast scrolling and remove blur immediately after
+        scrollTimeout.current = setTimeout(() => {
           isScrolling.current = false;
-        }, 80);
+          setIsScrollingActive(false);
+        }, 20);
       }
     };
 
-    container.addEventListener('wheel', handleWheel, { passive: false });
+    // Attach to window instead of container to allow scrolling anywhere
+    window.addEventListener('wheel', handleWheel, { passive: false });
     
     return () => {
-      container.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('wheel', handleWheel);
     };
   }, [selectedIndex, cards.length]);
 
@@ -50,7 +66,10 @@ function ScrollableCards({ numberOfCards, renderCardContent, cardsData }) {
   };
 
   return (
-    <div className="scrollable-cards" ref={containerRef}>
+    <div 
+      className={`scrollable-cards ${isScrollingActive ? 'scrollable-cards--scrolling' : ''}`} 
+      ref={containerRef}
+    >
       <div className="scrollable-cards__container">
         {cards.map((_, index) => (
           <div 
@@ -60,6 +79,7 @@ function ScrollableCards({ numberOfCards, renderCardContent, cardsData }) {
               '--offset': index - selectedIndex,
               zIndex: getZIndex(index)
             }}
+            onClick={() => setSelectedIndex(index)}
           >
             <div className="scrollable-cards__card-inner">
               {renderCardContent && cardsData && cardsData[index] 

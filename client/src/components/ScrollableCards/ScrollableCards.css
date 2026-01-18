@@ -31,7 +31,7 @@
   height: 100%;
   border-radius: 28px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   
   /* Liquid glass effect - opaque base with glass overlay */
   background: 
@@ -78,4 +78,19 @@
 /* Non-selected cards appear behind */
 .scrollable-cards__card:not(.scrollable-cards__card--selected) {
   opacity: 1;
+}
+
+/* Motion blur effect during scrolling - applies only when parent has --scrolling class */
+.scrollable-cards--scrolling .scrollable-cards__card {
+  transition: transform 0.04s ease-out, opacity 0.04s ease-out, filter 0.04s ease-out;
+  filter: blur(16px);
+  transform: 
+    translateY(calc(var(--offset) * 120px)) 
+    scale(calc(1 - abs(var(--offset)) * 0.05))
+    scaleY(1.04);
+}
+
+.scrollable-cards--scrolling .scrollable-cards__card--selected {
+  filter: blur(3px);
+  transform: translateY(0) scale(1) scaleY(1.02);
 }
