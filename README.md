@@ -6,12 +6,11 @@
 
 <div align="center">
 
-**A personalized financial decision advisor that generates actionable roadmaps based on your unique financial profile.**
+**A personalized financial decision advisor that generates actionable roadmaps based on your financial profile.**
 
 Ascend.ai is a full-stack application featuring a custom-built recommendation engine that analyzes user financial profiles and generates personalized, staged roadmaps with logical dependencies. Built for nwHacks 2026.
 
 </div>
----
 
 ## Table of Contents
 
@@ -632,3 +631,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 *ascend.ai allows you to make the right steps so that you can reach your next financial peak.*
+
+<div align="center">
+  <img src="assets/footer.png" alt="Ascend.ai Footer" width="800">
+</div>
