@@ -46,7 +46,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.15;
+  opacity: 1;
   pointer-events: none;
   z-index: 0;
 }
