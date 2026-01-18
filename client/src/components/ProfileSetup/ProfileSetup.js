@@ -27,7 +27,7 @@ const profileQuestions = [
   {
     id: 'propertyValue',
     title: 'Property Value',
-    subtitle: 'Market value if sold (ALL properties)',
+    subtitle: 'Current market value of all properties',
     options: [
       'Prefer not to say',
       'No property',
@@ -38,14 +38,13 @@ const profileQuestions = [
       '$500k–$750k',
       '$750k–$1M',
       '$1M–$1.5M',
-      '$1.5M–$2.5M',
-      '$2.5M+'
+      '$1.5M+',
     ]
   },
   {
     id: 'vehicleValue',
     title: 'Vehicle Value',
-    subtitle: 'Market value if sold (ALL vehicles)',
+    subtitle: 'Current market value of all vehicles',
     options: [
       'Prefer not to say',
       'No car',
@@ -61,7 +60,7 @@ const profileQuestions = [
   {
     id: 'investments',
     title: 'Investments',
-    subtitle: 'Stocks/bonds (if sold ALL investments)',
+    subtitle: 'Current value of all investments',
     options: [
       'Prefer not to say',
       '$0',
@@ -72,13 +71,13 @@ const profileQuestions = [
       '$60k–$100k',
       '$100k–$250k',
       '$250k–$500k',
-      '$500k–$1M',
-      '$1M+'
+      '$500k+',
     ]
   },
   {
     id: 'debt',
     title: 'Debt',
+    subtitle: 'Current total debt',
     options: [
       'Prefer not to say',
       '$0',
@@ -92,8 +91,7 @@ const profileQuestions = [
   },
   {
     id: 'salary',
-    title: 'Salary',
-    subtitle: 'Monthly income',
+    title: 'Monthly Salary',
     options: [
       'Prefer not to say',
       '<$1k',
