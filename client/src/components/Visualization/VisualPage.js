@@ -407,6 +407,7 @@ const VisualPage = ({ queryData }) => {
   const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const profileOptions = {
     age: ['18–24', '25–29', '30–34', '35–44', '45–54', '55–64', '65+'],
@@ -415,13 +416,89 @@ const VisualPage = ({ queryData }) => {
     investments: ['$0', '<$5k', '$5k–$15k', '$15k–$30k', '$30k–$60k', '$60k–$100k', '$100k–$250k']
   };
 
-  // Fetch recommendations from engine
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      try {
+  // Function to fetch recommendations from engine
+  const fetchRecommendations = useCallback(async (profileData, isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setIsRefreshing(true);
+      } else {
         setLoading(true);
-        
-        // Get user and profile data
+      }
+      
+      // Get user
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+      
+      // Map profile data to engine format
+      const engineProfile = {
+        age_range: profileData?.age || '30-34',
+        location: profileData?.location || 'Unknown',
+        property_value: profileData?.propertyValue || 'prefer_not_to_say',
+        vehicle_value: profileData?.vehicleValue || 'prefer_not_to_say',
+        investments: profileData?.investments || 'prefer_not_to_say',
+        debt: profileData?.debt || 'prefer_not_to_say',
+        monthly_salary: profileData?.salary || 'prefer_not_to_say',
+        has_dependents: profileData?.has_dependents || false,
+        employment_stability: 0.7
+      };
+
+      // Map query data
+      const engineQuery = {
+        risk_tolerance: queryData?.riskLevel || 'medium',
+        current_situation: queryData?.currentSituation || '',
+        goal: queryData?.futureGoals || ''
+      };
+
+      // Fetch from engine API
+      const response = await fetch(`${ENGINE_API_URL}/recommend`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...engineProfile,
+          ...engineQuery
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Engine API error: ${response.statusText}`);
+      }
+
+      const engineOutput = await response.json();
+
+      // Transform engine output to visualization format
+      const allRecs = [
+        ...(engineOutput.immediate || []),
+        ...(engineOutput.short_term || []),
+        ...(engineOutput.medium_term || []),
+        ...(engineOutput.long_term || []),
+        ...(engineOutput.extended_term || [])
+      ];
+
+      const transformedRecommendations = {
+        shortTerm: transformRecommendations(engineOutput.short_term || [], allRecs),
+        mediumTerm: transformRecommendations(engineOutput.medium_term || [], allRecs),
+        longTerm: transformRecommendations(engineOutput.long_term || [], allRecs)
+      };
+
+      setRecommendations(transformedRecommendations);
+      setLoading(false);
+      setIsRefreshing(false);
+    } catch (err) {
+      console.error('Error fetching recommendations:', err);
+      setError(err.message);
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  }, [queryData]);
+
+  // Initial load - fetch profile from Firebase and get recommendations
+  useEffect(() => {
+    const initialLoad = async () => {
+      try {
         const user = auth.currentUser;
         if (!user) {
           throw new Error('User not authenticated');
@@ -430,76 +507,28 @@ const VisualPage = ({ queryData }) => {
         const userProfileData = await getUserProfile(user.uid);
         const profileData = userProfileData?.profile || {};
         
-        // Map profile data to engine format
-        const engineProfile = {
-          age_range: profileData.age || '30-34',
-          location: profileData.location || 'Unknown',
-          property_value: profileData.propertyValue || 'prefer_not_to_say',
-          vehicle_value: profileData.vehicleValue || 'prefer_not_to_say',
-          investments: profileData.investments || 'prefer_not_to_say',
-          debt: profileData.debt || 'prefer_not_to_say',
-          monthly_salary: profileData.salary || 'prefer_not_to_say',
-          has_dependents: profileData.has_dependents || false,
-          employment_stability: 0.7
-        };
-
-        // Map query data
-        const engineQuery = {
-          risk_tolerance: queryData?.riskLevel || 'medium',
-          current_situation: queryData?.currentSituation || '',
-          goal: queryData?.futureGoals || ''
-        };
-
-        // Fetch from engine API
-        const response = await fetch(`${ENGINE_API_URL}/recommend`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            ...engineProfile,
-            ...engineQuery
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`Engine API error: ${response.statusText}`);
-        }
-
-        const engineOutput = await response.json();
-
-        // Transform engine output to visualization format
-        const allRecs = [
-          ...(engineOutput.immediate || []),
-          ...(engineOutput.short_term || []),
-          ...(engineOutput.medium_term || []),
-          ...(engineOutput.long_term || []),
-          ...(engineOutput.extended_term || [])
-        ];
-
-        const transformedRecommendations = {
-          shortTerm: transformRecommendations(engineOutput.short_term || [], allRecs),
-          mediumTerm: transformRecommendations(engineOutput.medium_term || [], allRecs),
-          longTerm: transformRecommendations(engineOutput.long_term || [], allRecs)
-        };
-
         setProfile(profileData);
-        setRecommendations(transformedRecommendations);
-        setLoading(false);
+        await fetchRecommendations(profileData, false);
       } catch (err) {
-        console.error('Error fetching recommendations:', err);
+        console.error('Error during initial load:', err);
         setError(err.message);
         setLoading(false);
       }
     };
 
     if (queryData) {
-      fetchRecommendations();
+      initialLoad();
     }
-  }, [queryData]);
+  }, [queryData, fetchRecommendations]);
 
+  // Update profile and refetch recommendations
   const updateProfile = (field, value) => {
-    setProfile(prev => ({ ...prev, [field]: value }));
+    setProfile(prev => {
+      const newProfile = { ...prev, [field]: value };
+      // Trigger refetch with new profile data
+      fetchRecommendations(newProfile, true);
+      return newProfile;
+    });
   };
 
   // Handle loading state
@@ -650,9 +679,15 @@ const VisualPage = ({ queryData }) => {
           <div className="visualization-header">
             <h1>Your Roadmap</h1>
             <p>Click on each section to explore your personalized action plan</p>
+            {isRefreshing && (
+              <div className="refreshing-indicator">
+                <div className="refresh-spinner"></div>
+                <span>Updating recommendations...</span>
+              </div>
+            )}
           </div>
 
-          <div className="stages-list">
+          <div className={`stages-list ${isRefreshing ? 'refreshing' : ''}`}>
             {stages.map(stage => (
               <StageSection
                 key={stage.title}
