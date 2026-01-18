@@ -5,6 +5,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import ProfileSetup from './components/ProfileSetup/ProfileSetup';
 import UserInputPage from './components/UserInputPage/UserInputPage';
 import AccountPage from './components/AccountPage/AccountPage';
+import VisualPage from './components/Visualization/VisualPage';
+import landingFrame from './landing-frame.svg';
 
 function App() {
   const [showButtons, setShowButtons] = useState(false);
@@ -13,7 +15,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [profileComplete, setProfileComplete] = useState(false);
   const [userInputComplete, setUserInputComplete] = useState(false);
-  const [setQueryData] = useState(null);
+  const [queryData, setQueryData] = useState(null);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [isMenuClosing, setIsMenuClosing] = useState(false);
   const [showAccountPage, setShowAccountPage] = useState(false);
@@ -214,9 +216,9 @@ function App() {
       );
     }
 
-    // Show dashboard after user input is complete
+    // Show visualization after user input is complete
     return (
-      <div className="App">
+      <div className="App visualization-view">
         <div className="account-button-container" onMouseLeave={handleMouseLeave}>
           {showAccountMenu && (
             <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
@@ -236,18 +238,7 @@ function App() {
             </svg>
           </button>
         </div>
-        <div className="dashboard">
-          <h1 className="title">ASCEND.ai</h1>
-          <div className="user-info">
-            <img 
-              src={user.photoURL || '/default-avatar.png'} 
-              alt="Profile" 
-              className="user-avatar"
-            />
-            <h2 className="welcome-text">Welcome, {user.displayName || 'User'}!</h2>
-            <p className="user-email">{user.email}</p>
-          </div>
-        </div>
+        <VisualPage queryData={queryData} />
       </div>
     );
   }
@@ -255,6 +246,12 @@ function App() {
   // Landing page for non-authenticated users
   return (
     <div className="App landing-page" onClick={handleScreenClick}>
+      {/* SVG Frame Overlay */}
+      <div 
+        className="landing-page-overlay" 
+        style={{ backgroundImage: `url(${landingFrame})` }}
+      />
+      
       {/* Decorative background elements */}
       <div className="decorative-elements">
         {/* Stars */}
