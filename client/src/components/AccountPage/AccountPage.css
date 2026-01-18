@@ -16,6 +16,17 @@
   background: linear-gradient(180deg, #0C2C55 0%, #296374 50%, #629FAD 100%);
 }
 
+/* Hide scrollbar for account page */
+.account-page::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.account-page {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .account-container {
   width: 100%;
   max-width: 600px;
@@ -56,7 +67,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding: 24px 30px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   backdrop-filter: blur(10px);
@@ -65,12 +76,12 @@
 
 .account-avatar-container {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .account-avatar {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   border: 4px solid #EDEDCE;
   object-fit: cover;
@@ -133,11 +144,11 @@
   font-size: 1rem;
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.08);
   color: #ffffff;
   backdrop-filter: blur(10px);
   outline: none;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
   font-family: inherit;
 }
 
@@ -154,14 +165,20 @@
 .account-input:hover,
 .account-select:hover {
   border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
-.account-input:focus,
+.account-input:focus {
+  border-color: rgba(100, 150, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 4px rgba(100, 150, 255, 0.1);
+}
+
 .account-select:focus {
   border-color: rgba(100, 150, 255, 0.6);
-  background: rgba(255, 255, 255, 0.12);
+  background-color: rgba(30, 40, 60, 0.95);
   box-shadow: 0 0 0 4px rgba(100, 150, 255, 0.1);
+  background-image: none;
 }
 
 .account-input::placeholder {
