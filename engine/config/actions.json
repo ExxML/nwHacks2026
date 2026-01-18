@@ -1,0 +1,902 @@
+{
+  "version": "1.0.0",
+  "actions": [
+    {
+      "id": "emergency_fund_starter",
+      "name": "Start Emergency Fund",
+      "description": "Begin building a $1,000 starter emergency fund to cover unexpected expenses",
+      "category": "savings",
+      "subcategory": "emergency_fund",
+      "tags": ["foundation", "safety", "beginner"],
+      "horizon": "short",
+      "base_priority": 95,
+      "risk_level": 1,
+      "expected_return": 0.02,
+      "volatility": 0.0,
+      "liquidity": 1.0,
+      "effort_hours": 2,
+      "complexity": 0.1,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.8,
+      "income_impact": 0.0,
+      "protection_impact": 0.9,
+      "growth_impact": 0.1,
+      "conditions": [
+        {"expression": "not has_emergency_fund", "description": "User doesn't have emergency fund"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "target_amount": 1000,
+        "recommended_monthly_contribution": 100
+      }
+    },
+    {
+      "id": "emergency_fund_3_months",
+      "name": "Build 3-Month Emergency Fund",
+      "description": "Expand emergency fund to cover 3 months of essential expenses",
+      "category": "savings",
+      "subcategory": "emergency_fund",
+      "tags": ["foundation", "safety", "intermediate"],
+      "horizon": "medium",
+      "base_priority": 85,
+      "risk_level": 1,
+      "expected_return": 0.03,
+      "volatility": 0.0,
+      "liquidity": 1.0,
+      "effort_hours": 1,
+      "complexity": 0.2,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.9,
+      "income_impact": 0.0,
+      "protection_impact": 0.95,
+      "growth_impact": 0.1,
+      "conditions": [],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_starter", "dependency_type": "soft", "strength": 0.8}
+      ],
+      "parameters": {
+        "months_coverage": 3
+      }
+    },
+    {
+      "id": "emergency_fund_6_months",
+      "name": "Build 6-Month Emergency Fund",
+      "description": "Maximize emergency protection with 6 months of expenses saved",
+      "category": "savings",
+      "subcategory": "emergency_fund",
+      "tags": ["foundation", "safety", "advanced"],
+      "horizon": "medium",
+      "base_priority": 70,
+      "risk_level": 1,
+      "expected_return": 0.03,
+      "volatility": 0.0,
+      "liquidity": 1.0,
+      "effort_hours": 1,
+      "complexity": 0.2,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.95,
+      "income_impact": 0.0,
+      "protection_impact": 1.0,
+      "growth_impact": 0.1,
+      "conditions": [
+        {"expression": "employment_stability < 0.7 or life_stage.value in ['pre_retirement', 'early_retirement']", "description": "Lower job stability or approaching retirement"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_3_months", "dependency_type": "hard", "strength": 1.0}
+      ],
+      "parameters": {
+        "months_coverage": 6
+      }
+    },
+    {
+      "id": "high_interest_debt_payoff",
+      "name": "Pay Off High-Interest Debt",
+      "description": "Aggressively pay down debt with interest rates above 15% (credit cards, payday loans)",
+      "category": "debt",
+      "subcategory": "high_interest",
+      "tags": ["debt", "critical", "foundation"],
+      "horizon": "immediate",
+      "base_priority": 98,
+      "risk_level": 1,
+      "expected_return": 0.20,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 3,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 1.0,
+      "savings_impact": 0.3,
+      "income_impact": 0.1,
+      "protection_impact": 0.5,
+      "growth_impact": 0.2,
+      "conditions": [
+        {"expression": "debt_to_income_ratio > 0.1", "description": "Has significant debt"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "interest_threshold": 0.15,
+        "method": "avalanche"
+      }
+    },
+    {
+      "id": "medium_interest_debt_payoff",
+      "name": "Pay Off Medium-Interest Debt",
+      "description": "Pay down debt with interest rates between 7-15% (car loans, personal loans)",
+      "category": "debt",
+      "subcategory": "medium_interest",
+      "tags": ["debt", "important"],
+      "horizon": "short",
+      "base_priority": 75,
+      "risk_level": 1,
+      "expected_return": 0.10,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 2,
+      "complexity": 0.2,
+      "recurring": true,
+      "debt_impact": 0.8,
+      "savings_impact": 0.2,
+      "income_impact": 0.05,
+      "protection_impact": 0.3,
+      "growth_impact": 0.2,
+      "conditions": [
+        {"expression": "debt_to_income_ratio > 0.05", "description": "Has medium-interest debt"}
+      ],
+      "dependencies": [
+        {"target_action_id": "high_interest_debt_payoff", "dependency_type": "soft", "strength": 0.9}
+      ],
+      "parameters": {
+        "interest_range": [0.07, 0.15]
+      }
+    },
+    {
+      "id": "employer_401k_match",
+      "name": "Maximize Employer 401(k) Match",
+      "description": "Contribute enough to get the full employer match - this is free money",
+      "category": "investment",
+      "subcategory": "retirement",
+      "tags": ["retirement", "free_money", "tax_advantaged"],
+      "horizon": "immediate",
+      "base_priority": 92,
+      "risk_level": 2,
+      "expected_return": 1.0,
+      "volatility": 0.0,
+      "liquidity": 0.1,
+      "effort_hours": 1,
+      "complexity": 0.2,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.7,
+      "income_impact": 0.0,
+      "protection_impact": 0.4,
+      "growth_impact": 0.9,
+      "conditions": [
+        {"expression": "normalized_salary > 2000", "description": "Has regular income"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_starter", "dependency_type": "soft", "strength": 0.7}
+      ],
+      "parameters": {
+        "typical_match_percent": 0.03,
+        "max_match_percent": 0.06
+      }
+    },
+    {
+      "id": "roth_ira_contribution",
+      "name": "Contribute to Roth IRA",
+      "description": "Make tax-free growth contributions to a Roth IRA up to the annual limit",
+      "category": "investment",
+      "subcategory": "retirement",
+      "tags": ["retirement", "tax_advantaged", "flexible"],
+      "horizon": "short",
+      "base_priority": 78,
+      "risk_level": 3,
+      "expected_return": 0.08,
+      "volatility": 0.15,
+      "liquidity": 0.6,
+      "effort_hours": 2,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.6,
+      "income_impact": 0.0,
+      "protection_impact": 0.5,
+      "growth_impact": 0.85,
+      "conditions": [
+        {"expression": "normalized_age < 60", "description": "Under retirement age"},
+        {"expression": "normalized_salary * 12 < 161000", "description": "Under Roth income limit"}
+      ],
+      "dependencies": [
+        {"target_action_id": "employer_401k_match", "dependency_type": "soft", "strength": 0.8},
+        {"target_action_id": "emergency_fund_3_months", "dependency_type": "soft", "strength": 0.6}
+      ],
+      "parameters": {
+        "annual_limit": 7000,
+        "catch_up_limit": 8000,
+        "catch_up_age": 50
+      }
+    },
+    {
+      "id": "traditional_ira_contribution",
+      "name": "Contribute to Traditional IRA",
+      "description": "Make tax-deductible contributions to a Traditional IRA",
+      "category": "investment",
+      "subcategory": "retirement",
+      "tags": ["retirement", "tax_advantaged", "tax_deduction"],
+      "horizon": "short",
+      "base_priority": 72,
+      "risk_level": 3,
+      "expected_return": 0.08,
+      "volatility": 0.15,
+      "liquidity": 0.3,
+      "effort_hours": 2,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.6,
+      "income_impact": 0.0,
+      "protection_impact": 0.5,
+      "growth_impact": 0.8,
+      "conditions": [
+        {"expression": "normalized_age < 72", "description": "Under RMD age"}
+      ],
+      "dependencies": [
+        {"target_action_id": "employer_401k_match", "dependency_type": "soft", "strength": 0.8}
+      ],
+      "parameters": {
+        "annual_limit": 7000,
+        "catch_up_limit": 8000
+      }
+    },
+    {
+      "id": "max_401k_contribution",
+      "name": "Maximize 401(k) Contributions",
+      "description": "Contribute up to the annual 401(k) limit for maximum tax-advantaged growth",
+      "category": "investment",
+      "subcategory": "retirement",
+      "tags": ["retirement", "tax_advantaged", "aggressive"],
+      "horizon": "medium",
+      "base_priority": 68,
+      "risk_level": 3,
+      "expected_return": 0.08,
+      "volatility": 0.15,
+      "liquidity": 0.1,
+      "effort_hours": 1,
+      "complexity": 0.2,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.8,
+      "income_impact": 0.0,
+      "protection_impact": 0.6,
+      "growth_impact": 0.95,
+      "conditions": [
+        {"expression": "financial_health.value >= 4", "description": "Good financial health"}
+      ],
+      "dependencies": [
+        {"target_action_id": "employer_401k_match", "dependency_type": "hard", "strength": 1.0},
+        {"target_action_id": "roth_ira_contribution", "dependency_type": "soft", "strength": 0.7}
+      ],
+      "parameters": {
+        "annual_limit": 23000,
+        "catch_up_limit": 30500
+      }
+    },
+    {
+      "id": "hsa_contribution",
+      "name": "Contribute to HSA",
+      "description": "Triple tax-advantaged savings through a Health Savings Account",
+      "category": "savings",
+      "subcategory": "health",
+      "tags": ["health", "tax_advantaged", "triple_tax"],
+      "horizon": "short",
+      "base_priority": 82,
+      "risk_level": 2,
+      "expected_return": 0.06,
+      "volatility": 0.10,
+      "liquidity": 0.5,
+      "effort_hours": 1,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.7,
+      "income_impact": 0.0,
+      "protection_impact": 0.8,
+      "growth_impact": 0.6,
+      "conditions": [
+        {"expression": "normalized_salary > 3000", "description": "Sufficient income"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_starter", "dependency_type": "soft", "strength": 0.6}
+      ],
+      "parameters": {
+        "individual_limit": 4150,
+        "family_limit": 8300
+      }
+    },
+    {
+      "id": "index_fund_investing",
+      "name": "Invest in Broad Market Index Funds",
+      "description": "Build wealth through low-cost, diversified index fund investments",
+      "category": "investment",
+      "subcategory": "stocks",
+      "tags": ["growth", "diversified", "passive"],
+      "horizon": "long",
+      "base_priority": 65,
+      "risk_level": 3,
+      "expected_return": 0.10,
+      "volatility": 0.18,
+      "liquidity": 0.9,
+      "effort_hours": 3,
+      "complexity": 0.4,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.5,
+      "income_impact": 0.1,
+      "protection_impact": 0.3,
+      "growth_impact": 0.9,
+      "conditions": [
+        {"expression": "financial_health.value >= 3", "description": "At least stable financial health"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_3_months", "dependency_type": "soft", "strength": 0.8},
+        {"target_action_id": "high_interest_debt_payoff", "dependency_type": "hard", "strength": 1.0}
+      ],
+      "parameters": {
+        "recommended_expense_ratio": 0.001,
+        "example_funds": ["VTI", "VXUS", "BND"]
+      }
+    },
+    {
+      "id": "growth_stock_investing",
+      "name": "Invest in Growth Stocks",
+      "description": "Allocate portion of portfolio to higher-growth individual stocks or funds",
+      "category": "investment",
+      "subcategory": "stocks",
+      "tags": ["growth", "aggressive", "higher_risk"],
+      "horizon": "long",
+      "base_priority": 45,
+      "risk_level": 5,
+      "expected_return": 0.15,
+      "volatility": 0.30,
+      "liquidity": 0.9,
+      "effort_hours": 5,
+      "complexity": 0.7,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.3,
+      "income_impact": 0.1,
+      "protection_impact": 0.1,
+      "growth_impact": 1.0,
+      "conditions": [
+        {"expression": "normalized_risk.value >= 4", "description": "Higher risk tolerance"},
+        {"expression": "normalized_age < 50", "description": "Long time horizon"},
+        {"expression": "financial_health.value >= 4", "description": "Good financial position"}
+      ],
+      "dependencies": [
+        {"target_action_id": "index_fund_investing", "dependency_type": "hard", "strength": 1.0},
+        {"target_action_id": "emergency_fund_6_months", "dependency_type": "soft", "strength": 0.7}
+      ],
+      "parameters": {
+        "max_portfolio_percent": 0.20
+      }
+    },
+    {
+      "id": "bond_allocation",
+      "name": "Add Bond Allocation",
+      "description": "Include bonds for stability and income, especially as you approach retirement",
+      "category": "investment",
+      "subcategory": "bonds",
+      "tags": ["stability", "income", "conservative"],
+      "horizon": "medium",
+      "base_priority": 55,
+      "risk_level": 2,
+      "expected_return": 0.05,
+      "volatility": 0.06,
+      "liquidity": 0.85,
+      "effort_hours": 2,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.5,
+      "income_impact": 0.2,
+      "protection_impact": 0.6,
+      "growth_impact": 0.4,
+      "conditions": [
+        {"expression": "normalized_age > 35 or normalized_risk.value <= 2", "description": "Older or conservative"}
+      ],
+      "dependencies": [
+        {"target_action_id": "index_fund_investing", "dependency_type": "soft", "strength": 0.6}
+      ],
+      "parameters": {
+        "rule_of_thumb": "age_in_bonds"
+      }
+    },
+    {
+      "id": "life_insurance",
+      "name": "Get Term Life Insurance",
+      "description": "Protect dependents with affordable term life insurance coverage",
+      "category": "protection",
+      "subcategory": "insurance",
+      "tags": ["insurance", "protection", "family"],
+      "horizon": "short",
+      "base_priority": 80,
+      "risk_level": 1,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 4,
+      "complexity": 0.4,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": -0.05,
+      "income_impact": 0.0,
+      "protection_impact": 1.0,
+      "growth_impact": 0.0,
+      "conditions": [
+        {"expression": "has_dependents", "description": "Has dependents to protect"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "coverage_multiple": 10,
+        "term_years": 20
+      }
+    },
+    {
+      "id": "disability_insurance",
+      "name": "Get Disability Insurance",
+      "description": "Protect your income with long-term disability coverage",
+      "category": "protection",
+      "subcategory": "insurance",
+      "tags": ["insurance", "protection", "income"],
+      "horizon": "short",
+      "base_priority": 75,
+      "risk_level": 1,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 3,
+      "complexity": 0.4,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": -0.03,
+      "income_impact": 0.0,
+      "protection_impact": 0.9,
+      "growth_impact": 0.0,
+      "conditions": [
+        {"expression": "normalized_salary > 4000", "description": "Significant income to protect"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "coverage_percent": 0.60
+      }
+    },
+    {
+      "id": "umbrella_insurance",
+      "name": "Get Umbrella Insurance",
+      "description": "Extra liability protection for high net worth individuals",
+      "category": "protection",
+      "subcategory": "insurance",
+      "tags": ["insurance", "protection", "liability"],
+      "horizon": "medium",
+      "base_priority": 50,
+      "risk_level": 1,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 2,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": -0.02,
+      "income_impact": 0.0,
+      "protection_impact": 0.7,
+      "growth_impact": 0.0,
+      "conditions": [
+        {"expression": "net_worth > 500000 or normalized_property > 300000", "description": "Significant assets to protect"}
+      ],
+      "dependencies": [
+        {"target_action_id": "life_insurance", "dependency_type": "soft", "strength": 0.5}
+      ],
+      "parameters": {
+        "minimum_coverage": 1000000
+      }
+    },
+    {
+      "id": "estate_planning_basic",
+      "name": "Create Basic Estate Plan",
+      "description": "Establish will, healthcare directive, and power of attorney",
+      "category": "protection",
+      "subcategory": "estate",
+      "tags": ["estate", "legal", "protection"],
+      "horizon": "medium",
+      "base_priority": 60,
+      "risk_level": 1,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 8,
+      "complexity": 0.5,
+      "recurring": false,
+      "debt_impact": 0.0,
+      "savings_impact": -0.01,
+      "income_impact": 0.0,
+      "protection_impact": 0.8,
+      "growth_impact": 0.0,
+      "conditions": [
+        {"expression": "normalized_age > 30 or has_dependents or net_worth > 100000", "description": "Has assets or dependents"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "documents": ["will", "healthcare_directive", "power_of_attorney"]
+      }
+    },
+    {
+      "id": "real_estate_down_payment",
+      "name": "Save for Home Down Payment",
+      "description": "Build savings for a 20% down payment to avoid PMI",
+      "category": "savings",
+      "subcategory": "major_purchase",
+      "tags": ["home", "savings", "goal"],
+      "horizon": "medium",
+      "base_priority": 55,
+      "risk_level": 1,
+      "expected_return": 0.04,
+      "volatility": 0.02,
+      "liquidity": 0.8,
+      "effort_hours": 2,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.7,
+      "income_impact": 0.0,
+      "protection_impact": 0.2,
+      "growth_impact": 0.3,
+      "conditions": [
+        {"expression": "not is_homeowner", "description": "Not currently a homeowner"},
+        {"expression": "financial_health.value >= 3", "description": "Stable financial health"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_3_months", "dependency_type": "soft", "strength": 0.8},
+        {"target_action_id": "high_interest_debt_payoff", "dependency_type": "hard", "strength": 1.0}
+      ],
+      "parameters": {
+        "down_payment_percent": 0.20,
+        "ideal_savings_vehicle": "high_yield_savings"
+      }
+    },
+    {
+      "id": "mortgage_refinance",
+      "name": "Refinance Mortgage",
+      "description": "Refinance to a lower rate if you can save at least 0.75% on interest",
+      "category": "debt",
+      "subcategory": "optimization",
+      "tags": ["mortgage", "optimization", "savings"],
+      "horizon": "short",
+      "base_priority": 60,
+      "risk_level": 1,
+      "expected_return": 0.05,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 10,
+      "complexity": 0.6,
+      "recurring": false,
+      "debt_impact": 0.5,
+      "savings_impact": 0.4,
+      "income_impact": 0.0,
+      "protection_impact": 0.0,
+      "growth_impact": 0.2,
+      "conditions": [
+        {"expression": "is_homeowner", "description": "Is a homeowner"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "rate_threshold": 0.0075,
+        "break_even_months": 24
+      }
+    },
+    {
+      "id": "side_income",
+      "name": "Develop Side Income Stream",
+      "description": "Create additional income through freelancing, consulting, or a side business",
+      "category": "income",
+      "subcategory": "side_hustle",
+      "tags": ["income", "growth", "entrepreneurial"],
+      "horizon": "medium",
+      "base_priority": 50,
+      "risk_level": 3,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 1.0,
+      "effort_hours": 40,
+      "complexity": 0.7,
+      "recurring": true,
+      "debt_impact": 0.1,
+      "savings_impact": 0.4,
+      "income_impact": 1.0,
+      "protection_impact": 0.2,
+      "growth_impact": 0.5,
+      "conditions": [
+        {"expression": "normalized_age < 60", "description": "Working age"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_starter", "dependency_type": "soft", "strength": 0.5}
+      ],
+      "parameters": {
+        "time_investment_weekly": 10
+      }
+    },
+    {
+      "id": "career_development",
+      "name": "Invest in Career Development",
+      "description": "Increase earning potential through skills, certifications, or education",
+      "category": "income",
+      "subcategory": "career",
+      "tags": ["income", "growth", "skills"],
+      "horizon": "medium",
+      "base_priority": 55,
+      "risk_level": 2,
+      "expected_return": 0.15,
+      "volatility": 0.10,
+      "liquidity": 0.0,
+      "effort_hours": 100,
+      "complexity": 0.5,
+      "recurring": false,
+      "debt_impact": 0.0,
+      "savings_impact": -0.1,
+      "income_impact": 0.8,
+      "protection_impact": 0.3,
+      "growth_impact": 0.6,
+      "conditions": [
+        {"expression": "life_stage.value in ['early_career', 'career_growth', 'peak_earning']", "description": "In active career phase"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "expected_salary_increase": 0.10
+      }
+    },
+    {
+      "id": "negotiate_salary",
+      "name": "Negotiate Salary Increase",
+      "description": "Research market rates and negotiate a raise with current employer",
+      "category": "income",
+      "subcategory": "career",
+      "tags": ["income", "quick_win", "no_cost"],
+      "horizon": "immediate",
+      "base_priority": 70,
+      "risk_level": 2,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 1.0,
+      "effort_hours": 5,
+      "complexity": 0.4,
+      "recurring": false,
+      "debt_impact": 0.0,
+      "savings_impact": 0.3,
+      "income_impact": 0.7,
+      "protection_impact": 0.0,
+      "growth_impact": 0.4,
+      "conditions": [
+        {"expression": "employment_stability >= 0.5", "description": "Reasonably stable employment"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "typical_increase": 0.05
+      }
+    },
+    {
+      "id": "tax_optimization",
+      "name": "Optimize Tax Strategy",
+      "description": "Review and optimize tax situation through deductions, credits, and timing",
+      "category": "optimization",
+      "subcategory": "tax",
+      "tags": ["tax", "optimization", "savings"],
+      "horizon": "short",
+      "base_priority": 65,
+      "risk_level": 1,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 1.0,
+      "effort_hours": 4,
+      "complexity": 0.5,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.3,
+      "income_impact": 0.1,
+      "protection_impact": 0.0,
+      "growth_impact": 0.2,
+      "conditions": [
+        {"expression": "normalized_salary * 12 > 50000", "description": "Income worth optimizing"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "strategies": ["tax_loss_harvesting", "retirement_contributions", "charitable_giving"]
+      }
+    },
+    {
+      "id": "automate_finances",
+      "name": "Automate Financial Systems",
+      "description": "Set up automatic transfers for savings, investments, and bills",
+      "category": "optimization",
+      "subcategory": "automation",
+      "tags": ["automation", "foundation", "behavioral"],
+      "horizon": "immediate",
+      "base_priority": 85,
+      "risk_level": 1,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 1.0,
+      "effort_hours": 3,
+      "complexity": 0.2,
+      "recurring": false,
+      "debt_impact": 0.1,
+      "savings_impact": 0.5,
+      "income_impact": 0.0,
+      "protection_impact": 0.2,
+      "growth_impact": 0.3,
+      "conditions": [],
+      "dependencies": [],
+      "parameters": {
+        "accounts_to_automate": ["savings", "investments", "bills"]
+      }
+    },
+    {
+      "id": "debt_consolidation",
+      "name": "Consolidate Debt",
+      "description": "Combine multiple debts into a single, lower-interest loan",
+      "category": "debt",
+      "subcategory": "optimization",
+      "tags": ["debt", "optimization", "simplification"],
+      "horizon": "short",
+      "base_priority": 58,
+      "risk_level": 2,
+      "expected_return": 0.08,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 6,
+      "complexity": 0.5,
+      "recurring": false,
+      "debt_impact": 0.6,
+      "savings_impact": 0.2,
+      "income_impact": 0.0,
+      "protection_impact": 0.1,
+      "growth_impact": 0.1,
+      "conditions": [
+        {"expression": "debt_to_income_ratio > 0.2", "description": "Multiple debts to consolidate"}
+      ],
+      "dependencies": [],
+      "parameters": {
+        "minimum_debts": 3
+      }
+    },
+    {
+      "id": "credit_score_optimization",
+      "name": "Optimize Credit Score",
+      "description": "Improve credit score to access better rates and terms",
+      "category": "optimization",
+      "subcategory": "credit",
+      "tags": ["credit", "foundation", "rates"],
+      "horizon": "short",
+      "base_priority": 62,
+      "risk_level": 1,
+      "expected_return": 0.02,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 2,
+      "complexity": 0.3,
+      "recurring": true,
+      "debt_impact": 0.2,
+      "savings_impact": 0.1,
+      "income_impact": 0.0,
+      "protection_impact": 0.0,
+      "growth_impact": 0.1,
+      "conditions": [],
+      "dependencies": [],
+      "parameters": {
+        "target_score": 750,
+        "utilization_target": 0.30
+      }
+    },
+    {
+      "id": "real_estate_investment",
+      "name": "Invest in Real Estate",
+      "description": "Build wealth through rental property or REITs",
+      "category": "investment",
+      "subcategory": "real_estate",
+      "tags": ["real_estate", "growth", "income"],
+      "horizon": "long",
+      "base_priority": 45,
+      "risk_level": 4,
+      "expected_return": 0.12,
+      "volatility": 0.15,
+      "liquidity": 0.2,
+      "effort_hours": 50,
+      "complexity": 0.8,
+      "recurring": false,
+      "debt_impact": -0.2,
+      "savings_impact": 0.4,
+      "income_impact": 0.5,
+      "protection_impact": 0.3,
+      "growth_impact": 0.8,
+      "conditions": [
+        {"expression": "financial_health.value >= 4", "description": "Strong financial position"},
+        {"expression": "net_worth > 200000", "description": "Sufficient capital"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_6_months", "dependency_type": "hard", "strength": 1.0},
+        {"target_action_id": "max_401k_contribution", "dependency_type": "soft", "strength": 0.6}
+      ],
+      "parameters": {
+        "minimum_down_payment": 50000,
+        "expected_cash_on_cash": 0.08
+      }
+    },
+    {
+      "id": "charitable_giving_strategy",
+      "name": "Develop Charitable Giving Strategy",
+      "description": "Structure charitable giving for maximum impact and tax efficiency",
+      "category": "optimization",
+      "subcategory": "giving",
+      "tags": ["charitable", "tax", "values"],
+      "horizon": "medium",
+      "base_priority": 35,
+      "risk_level": 1,
+      "expected_return": 0.0,
+      "volatility": 0.0,
+      "liquidity": 0.0,
+      "effort_hours": 4,
+      "complexity": 0.4,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": -0.05,
+      "income_impact": 0.0,
+      "protection_impact": 0.0,
+      "growth_impact": 0.0,
+      "conditions": [
+        {"expression": "financial_health.value >= 4", "description": "Can afford giving"},
+        {"expression": "normalized_salary * 12 > 100000", "description": "Higher income for tax benefit"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_3_months", "dependency_type": "hard", "strength": 1.0}
+      ],
+      "parameters": {
+        "strategies": ["donor_advised_fund", "appreciated_stock", "qcd"]
+      }
+    },
+    {
+      "id": "college_savings_529",
+      "name": "Start 529 College Savings Plan",
+      "description": "Tax-advantaged savings for education expenses",
+      "category": "savings",
+      "subcategory": "education",
+      "tags": ["education", "tax_advantaged", "children"],
+      "horizon": "long",
+      "base_priority": 55,
+      "risk_level": 2,
+      "expected_return": 0.07,
+      "volatility": 0.12,
+      "liquidity": 0.4,
+      "effort_hours": 3,
+      "complexity": 0.4,
+      "recurring": true,
+      "debt_impact": 0.0,
+      "savings_impact": 0.6,
+      "income_impact": 0.0,
+      "protection_impact": 0.3,
+      "growth_impact": 0.5,
+      "conditions": [
+        {"expression": "has_dependents", "description": "Has children or dependents"},
+        {"expression": "normalized_age < 55", "description": "Children likely still young"}
+      ],
+      "dependencies": [
+        {"target_action_id": "emergency_fund_3_months", "dependency_type": "soft", "strength": 0.7},
+        {"target_action_id": "employer_401k_match", "dependency_type": "soft", "strength": 0.8}
+      ],
+      "parameters": {
+        "annual_contribution_target": 5000
+      }
+    }
+  ]
+}
