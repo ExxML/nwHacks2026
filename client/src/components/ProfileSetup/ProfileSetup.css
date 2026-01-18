@@ -242,6 +242,39 @@
   }
 }
 
+/* Welcome Image Styles */
+.profile-setup-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-image-container {
+  position: absolute;
+  top: -140px;
+  left: 48%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.welcome-image-container.visible {
+  opacity: 1;
+}
+
+.welcome-image-container.hidden {
+  opacity: 0;
+}
+
+.welcome-image {
+  max-width: 800px;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+}
+
 /* Hide scrollbar for city suggestions */
 .city-suggestions-dropdown::-webkit-scrollbar {
   display: none;

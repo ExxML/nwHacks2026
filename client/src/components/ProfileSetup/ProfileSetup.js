@@ -1,6 +1,7 @@
 import './ProfileSetup.css';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ScrollableCards from '../ScrollableCards/ScrollableCards';
+import welcomeImage from '../../assets/welcome_profilesetup.svg';
 
 const profileQuestions = [
   {
@@ -112,6 +113,7 @@ function ProfileSetup({ onComplete }) {
   const [showCitySuggestions, setShowCitySuggestions] = useState(false);
   const [citySelected, setCitySelected] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [showWelcomeImage, setShowWelcomeImage] = useState(true);
   const debounceTimer = useRef(null);
   const cityInputRef = useRef(null);
   const previousCardIndex = useRef(0);
@@ -239,6 +241,11 @@ function ProfileSetup({ onComplete }) {
       handleCitySelect(citySuggestions[0]);
     }
   }, [cityInput, citySelected, citySuggestions, handleCitySelect]);
+
+  // Update welcome image visibility based on selected card
+  useEffect(() => {
+    setShowWelcomeImage(currentCardIndex === 0);
+  }, [currentCardIndex]);
 
   // Auto-select first city when leaving location card (index 1)
   useEffect(() => {
@@ -376,11 +383,16 @@ function ProfileSetup({ onComplete }) {
   };
 
   return (
-    <ScrollableCards 
-      numberOfCards={profileQuestions.length}
-      renderCardContent={renderCardContent}
-      cardsData={profileQuestions}
-    />
+    <div className="profile-setup-container">
+      <div className={`welcome-image-container ${showWelcomeImage ? 'visible' : 'hidden'}`}>
+        <img src={welcomeImage} alt="Welcome" className="welcome-image" />
+      </div>
+      <ScrollableCards 
+        numberOfCards={profileQuestions.length}
+        renderCardContent={renderCardContent}
+        cardsData={profileQuestions}
+      />
+    </div>
   );
 }
 
