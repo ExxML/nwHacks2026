@@ -3,10 +3,21 @@ import { useState, useEffect } from 'react';
 import { auth, signInWithGoogle, logOut, saveUserProfile, checkProfileCompleted } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import ProfileSetup from './components/ProfileSetup/ProfileSetup';
+import ProfileConfirmation from './components/ProfileSetup/ProfileConfirmation/ProfileConfirmation';
 import UserInputPage from './components/UserInputPage/UserInputPage';
 import AccountPage from './components/AccountPage/AccountPage';
 import VisualPage from './components/Visualization/VisualPage';
 import landingFrame from './landing-frame.svg';
+
+// Decorative star background component
+const StarDecorations = () => (
+  <div 
+    className="stars-overlay"
+    style={{ 
+      backgroundImage: `url(${process.env.PUBLIC_URL}/stars-overlay.svg)` 
+    }}
+  />
+);
 
 function App() {
   const [showButtons, setShowButtons] = useState(false);
@@ -14,6 +25,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profileComplete, setProfileComplete] = useState(false);
+  const [pendingProfileData, setPendingProfileData] = useState(null);
   const [userInputComplete, setUserInputComplete] = useState(false);
   const [queryData, setQueryData] = useState(null);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
@@ -123,16 +135,28 @@ function App() {
     setShowAccountPage(false);
   };
 
-  const handleProfileComplete = async (profileData) => {
+  const handleProfileComplete = (profileData) => {
+    setPendingProfileData(profileData);
+  };
+ 
+  const handleConfirmProfile = async () => {
+    if (!user || !pendingProfileData) {
+      return;
+    }
+ 
     try {
-      // Save profile data to Firestore
-      await saveUserProfile(user.uid, profileData);
-      console.log('Profile saved to database:', profileData);
+      await saveUserProfile(user.uid, pendingProfileData);
+      console.log('Profile saved to database:', pendingProfileData);
       setProfileComplete(true);
+      setPendingProfileData(null);
     } catch (error) {
       console.error('Error saving profile:', error);
       alert('Failed to save profile. Please try again.');
     }
+  };
+
+  const handleEditProfile = () => {
+    setPendingProfileData(null);
   };
 
   const handleUserInputComplete = (inputData) => {
@@ -144,6 +168,7 @@ function App() {
   if (loading) {
     return (
       <div className="App">
+        <StarDecorations />
         <div className="loading">Loading...</div>
       </div>
     );
@@ -164,6 +189,7 @@ function App() {
     if (!profileComplete) {
       return (
         <div className="App">
+          <StarDecorations />
           <div className="account-button-container" onMouseLeave={handleMouseLeave}>
             {showAccountMenu && (
               <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
@@ -178,12 +204,20 @@ function App() {
               onClick={toggleAccountMenu}
             >
               <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
-                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="12" cy="8" r="4" stroke="#0c2c55" strokeWidth="2"/>
+                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#0c2c55" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </button>
           </div>
-          <ProfileSetup onComplete={handleProfileComplete} />
+          {pendingProfileData ? (
+            <ProfileConfirmation
+              profileData={pendingProfileData}
+              onConfirm={handleConfirmProfile}
+              onEdit={handleEditProfile}
+            />
+          ) : (
+            <ProfileSetup onComplete={handleProfileComplete} />
+          )}
         </div>
       );
     }
@@ -191,7 +225,8 @@ function App() {
     // Show user input page after profile is complete
     if (!userInputComplete) {
       return (
-        <div className="App">
+        <div className="App app-scrollable">
+          <StarDecorations />
           <div className="account-button-container" onMouseLeave={handleMouseLeave}>
             {showAccountMenu && (
               <div className={`account-menu ${isMenuClosing ? 'closing' : ''}`}>
@@ -206,8 +241,8 @@ function App() {
               onClick={toggleAccountMenu}
             >
               <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
-                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="12" cy="8" r="4" stroke="#0c2c55" strokeWidth="2"/>
+                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#0c2c55" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </button>
           </div>
@@ -233,8 +268,8 @@ function App() {
             onClick={toggleAccountMenu}
           >
             <svg className="account-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="8" r="4" stroke="#EDEDCE" strokeWidth="2"/>
-              <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#EDEDCE" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="12" cy="8" r="4" stroke="#0c2c55" strokeWidth="2"/>
+              <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="#0c2c55" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </button>
         </div>

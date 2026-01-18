@@ -1,0 +1,182 @@
+.profile-confirmation-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.profile-confirmation-card {
+  position: relative;
+  width: 720px;
+  max-width: 100%;
+  border-radius: 32px;
+  padding: 48px 60px 40px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.86) 50%,
+      rgba(255, 255, 255, 0.94) 100%
+    );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.25),
+    inset 0 0 1px rgba(255, 255, 255, 0.5);
+  color: #1b2a3b;
+}
+
+.profile-confirmation-title {
+  font-family: 'Georgia', serif;
+  font-size: 2.3rem;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: #283a4f;
+  margin-bottom: 34px;
+}
+
+.profile-confirmation-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.profile-confirmation-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+}
+
+.profile-confirmation-label {
+  font-family: 'Georgia', serif;
+  font-weight: 500;
+  color: #4b5b6b;
+}
+
+.profile-confirmation-value {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 500;
+  color: #32475b;
+}
+
+.profile-confirmation-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.profile-confirmation-brand {
+  padding: 16px 22px;
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.8) 100%
+    );
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+
+.profile-confirmation-brand-name {
+  font-family: 'Georgia', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #3a4a5c;
+  letter-spacing: -0.05em;
+  margin-bottom: 2px;
+}
+
+.profile-confirmation-brand-subtitle {
+  font-size: 0.85rem;
+  color: #7c8a96;
+}
+
+.profile-confirmation-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.profile-confirmation-button {
+  padding: 11px 26px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.profile-confirmation-button.secondary {
+  background: rgba(255, 255, 255, 0.8);
+  color: #2b4054;
+  border: 1px solid rgba(43, 64, 84, 0.18);
+}
+
+.profile-confirmation-button.secondary:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+.profile-confirmation-button.primary {
+  background: linear-gradient(135deg, #296374 0%, #629fad 100%);
+  color: #f5fbff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.profile-confirmation-button.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 768px) {
+  .profile-confirmation-wrapper {
+    padding: 16px;
+  }
+
+  .profile-confirmation-card {
+    padding: 32px 22px 28px;
+    border-radius: 26px;
+  }
+
+  .profile-confirmation-title {
+    font-size: 1.9rem;
+    text-align: center;
+  }
+
+  .profile-confirmation-row {
+    font-size: 0.98rem;
+    gap: 12px;
+  }
+
+  .profile-confirmation-bottom {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-confirmation-brand {
+    order: 2;
+  }
+
+  .profile-confirmation-actions {
+    order: 1;
+    justify-content: flex-end;
+  }
+
+  .profile-confirmation-button {
+    flex: 1;
+    padding-inline: 18px;
+  }
+}
