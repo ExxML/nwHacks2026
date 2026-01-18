@@ -8,7 +8,7 @@ import UserInputPage from './components/UserInputPage/UserInputPage';
 import AccountPage from './components/AccountPage/AccountPage';
 import VisualPage from './components/Visualization/VisualPage';
 import background from './assets/background.svg';
-import ascendLogo from './assets/ascend_logo.svg';
+import ascendLogo from './assets/ascend_logo_full.svg';
 
 // Decorative star background component
 const StarDecorations = () => (
