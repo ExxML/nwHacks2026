@@ -1,12 +1,16 @@
-# ascend.ai
+# ascend.ai - A Personalized Financial Advisor Engine
 
 <div align="center">
   <img src="assets/landing thumbnaiil.png" alt="Ascend.ai - Your personal financial decision advisor" width="600">
 </div>
 
+<div align="center">
+
 **A personalized financial decision advisor that generates actionable roadmaps based on your unique financial profile.**
 
 Ascend.ai is a full-stack application featuring a custom-built recommendation engine that analyzes user financial profiles and generates personalized, staged roadmaps with logical dependencies. Built for nwHacks 2026.
+
+</div>
 ---
 
 ## Table of Contents
@@ -28,6 +32,10 @@ Ascend.ai is a full-stack application featuring a custom-built recommendation en
 ---
 
 ## Overview
+
+<div align="center">
+  <img src="assets/landing.png" alt="Ascend.ai Overview" width="800">
+</div>
 
 Ascend.ai solves the problem of inaccessible, expensive, or generic financial advice by providing a personalized recommendation engine that adapts to each user's unique financial situation. The system combines structured heuristic logic with intelligent personalization to deliver transparent, actionable financial guidance.
 
