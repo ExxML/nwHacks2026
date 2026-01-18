@@ -498,7 +498,7 @@
   position: fixed;
   top: 2rem;
   right: 2rem;
-  z-index: 100;
+  z-index: 200;
   display: flex;
   align-items: flex-start;
 }
@@ -508,7 +508,7 @@
   height: 50px;
   border-radius: 50%;
   border: 2px solid #0c2c55;
-  background: transparent;
+  background: #EDEDCE;
   cursor: pointer;
   padding: 0;
   overflow: hidden;

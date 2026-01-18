@@ -4,45 +4,36 @@ import { useState } from 'react';
 function UserInputPage({ onComplete }) {
   const [currentSituation, setCurrentSituation] = useState('');
   const [futureGoals, setFutureGoals] = useState('');
-  const [riskLevel, setRiskLevel] = useState(null);
+  const [riskSliderValue, setRiskSliderValue] = useState(50); // 0-100 range
 
-  const riskOptions = [
-    {
-      id: 'low',
-      label: 'Low',
+  // Convert slider value to risk level
+  const getRiskLevel = (value) => {
+    if (value < 33) return 'low';
+    if (value < 67) return 'medium';
+    return 'high';
+  };
+
+  const riskLevel = getRiskLevel(riskSliderValue);
+
+  const riskConfig = {
+    low: {
+      label: 'Low Risk',
       description: 'Preserve what I have',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2"/>
-          <path d="M8 12L10.5 14.5L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
+      color: '#4ade80'
     },
-    {
-      id: 'medium',
-      label: 'Medium',
+    medium: {
+      label: 'Medium Risk',
       description: 'Balanced approach',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
+      color: '#fbbf24'
     },
-    {
-      id: 'high',
-      label: 'High',
+    high: {
+      label: 'High Risk',
       description: 'Maximize growth',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
+      color: '#f87171'
     }
-  ];
+  };
 
-  const isFormValid = currentSituation.trim() && futureGoals.trim() && riskLevel;
+  const isFormValid = currentSituation.trim() && futureGoals.trim();
 
   const handleSubmit = () => {
     if (isFormValid) {
@@ -108,7 +99,7 @@ function UserInputPage({ onComplete }) {
           />
         </div>
 
-        {/* Risk Level Selector */}
+        {/* Risk Level Slider */}
         <div className="input-section">
           <label className="input-label risk-label">
             <span className="label-icon">
@@ -121,19 +112,52 @@ function UserInputPage({ onComplete }) {
             What's your risk tolerance?
           </label>
           
-          <div className="risk-selector">
-            {riskOptions.map((option) => (
-              <button
-                key={option.id}
-                className={`risk-option ${riskLevel === option.id ? 'selected' : ''}`}
-                onClick={() => setRiskLevel(option.id)}
-                type="button"
+          <div className="risk-slider-container">
+            {/* Current selection display */}
+            <div 
+              className={`risk-display risk-${riskLevel}`}
+              style={{ '--risk-color': riskConfig[riskLevel].color }}
+            >
+              <span className="risk-display-label">{riskConfig[riskLevel].label}</span>
+              <span className="risk-display-description">{riskConfig[riskLevel].description}</span>
+            </div>
+            
+            {/* Slider */}
+            <div className="risk-slider-wrapper">
+              <div className="risk-slider-labels">
+                <span className={riskLevel === 'low' ? 'active' : ''}>Low</span>
+                <span className={riskLevel === 'medium' ? 'active' : ''}>Medium</span>
+                <span className={riskLevel === 'high' ? 'active' : ''}>High</span>
+              </div>
+              <div 
+                className="risk-slider-track"
+                style={{ 
+                  '--thumb-position': `${riskSliderValue}%`,
+                  '--thumb-color': riskConfig[riskLevel].color
+                }}
               >
-                <span className="risk-icon">{option.icon}</span>
-                <span className="risk-label-text">{option.label}</span>
-                <span className="risk-description">{option.description}</span>
-              </button>
-            ))}
+                <div 
+                  className="risk-slider-fill"
+                  style={{ 
+                    width: `${riskSliderValue}%`,
+                    backgroundColor: riskConfig[riskLevel].color
+                  }}
+                />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={riskSliderValue}
+                  onChange={(e) => setRiskSliderValue(Number(e.target.value))}
+                  className="risk-slider-input"
+                />
+              </div>
+              <div className="risk-slider-zones">
+                <div className="zone zone-low"></div>
+                <div className="zone zone-medium"></div>
+                <div className="zone zone-high"></div>
+              </div>
+            </div>
           </div>
         </div>
 

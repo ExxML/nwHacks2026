@@ -161,143 +161,169 @@
 }
 
 /* ==========================================
-   RISK SELECTOR
+   RISK SLIDER
    ========================================== */
 
 .risk-label {
   margin-bottom: 4px;
 }
 
-.risk-selector {
+.risk-slider-container {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.risk-option {
-  flex: 1;
+/* Risk display card */
+.risk-display {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 24px 16px;
+  gap: 6px;
+  padding: 20px 24px;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0.02) 100%
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 100%
   );
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--risk-color, rgba(255, 255, 255, 0.2));
   border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
 }
 
-.risk-option:hover {
-  border-color: rgba(255, 255, 255, 0.25);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.04) 100%
-  );
-  transform: translateY(-2px);
+.risk-display.risk-low {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.12) 0%, rgba(74, 222, 128, 0.04) 100%);
+  box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.1);
 }
 
-.risk-option.selected {
-  transform: translateY(-2px);
+.risk-display.risk-medium {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(251, 191, 36, 0.04) 100%);
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
 }
 
-/* Low risk - green */
-.risk-option:first-child.selected {
-  border-color: rgba(74, 222, 128, 0.7);
-  background: linear-gradient(
-    135deg,
-    rgba(74, 222, 128, 0.15) 0%,
-    rgba(74, 222, 128, 0.05) 100%
-  );
-  box-shadow: 
-    0 0 0 4px rgba(74, 222, 128, 0.12),
-    0 8px 32px rgba(74, 222, 128, 0.15);
+.risk-display.risk-high {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.12) 0%, rgba(248, 113, 113, 0.04) 100%);
+  box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.1);
 }
 
-/* Medium risk - yellow */
-.risk-option:nth-child(2).selected {
-  border-color: rgba(251, 191, 36, 0.7);
-  background: linear-gradient(
-    135deg,
-    rgba(251, 191, 36, 0.15) 0%,
-    rgba(251, 191, 36, 0.05) 100%
-  );
-  box-shadow: 
-    0 0 0 4px rgba(251, 191, 36, 0.12),
-    0 8px 32px rgba(251, 191, 36, 0.15);
+.risk-display-label {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--risk-color, #0c2c55);
+  transition: color 0.3s ease;
 }
 
-/* High risk - red */
-.risk-option:last-child.selected {
-  border-color: rgba(248, 113, 113, 0.7);
-  background: linear-gradient(
-    135deg,
-    rgba(248, 113, 113, 0.15) 0%,
-    rgba(248, 113, 113, 0.05) 100%
-  );
-  box-shadow: 
-    0 0 0 4px rgba(248, 113, 113, 0.12),
-    0 8px 32px rgba(248, 113, 113, 0.15);
+.risk-display-description {
+  font-size: 0.9rem;
+  color: rgba(12, 44, 85, 0.7);
 }
 
-.risk-icon {
-  width: 36px;
-  height: 36px;
+/* Slider wrapper */
+.risk-slider-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(12, 44, 85, 0.6);
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Labels above slider */
+.risk-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.risk-slider-labels span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(12, 44, 85, 0.4);
   transition: all 0.3s ease;
 }
 
-.risk-icon svg {
+.risk-slider-labels span.active {
+  color: #0c2c55;
+  transform: scale(1.1);
+}
+
+/* Slider track */
+.risk-slider-track {
+  position: relative;
+  height: 12px;
+  background: rgba(12, 44, 85, 0.15);
+  border-radius: 6px;
+  overflow: visible;
+}
+
+.risk-slider-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+/* Range input */
+.risk-slider-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Custom thumb - using pseudo element on track instead */
+.risk-slider-track::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: var(--thumb-position, 50%);
+  transform: translate(-50%, -50%);
   width: 28px;
   height: 28px;
+  background: white;
+  border: 3px solid var(--thumb-color, #fbbf24);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: border-color 0.3s ease, transform 0.15s ease;
+  pointer-events: none;
 }
 
-.risk-option.selected .risk-icon {
-  color: #0c2c55;
+.risk-slider-track:hover::after {
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
-.risk-option:first-child.selected .risk-icon {
-  color: #4ade80;
+/* Zone indicators */
+.risk-slider-zones {
+  display: flex;
+  margin-top: 6px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.risk-option:nth-child(2).selected .risk-icon {
-  color: #fbbf24;
+.risk-slider-zones .zone {
+  flex: 1;
+  height: 4px;
+  opacity: 0.4;
 }
 
-.risk-option:last-child.selected .risk-icon {
-  color: #f87171;
+.risk-slider-zones .zone-low {
+  background: #4ade80;
+  border-radius: 4px 0 0 4px;
 }
 
-.risk-label-text {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: rgba(12, 44, 85, 0.9);
-  transition: color 0.3s ease;
+.risk-slider-zones .zone-medium {
+  background: #fbbf24;
 }
 
-.risk-option.selected .risk-label-text {
-  color: #0c2c55;
-}
-
-.risk-description {
-  font-size: 0.8rem;
-  color: rgba(12, 44, 85, 0.5);
-  text-align: center;
-  line-height: 1.3;
-  transition: color 0.3s ease;
-}
-
-.risk-option.selected .risk-description {
-  color: rgba(12, 44, 85, 0.8);
+.risk-slider-zones .zone-high {
+  background: #f87171;
+  border-radius: 0 4px 4px 0;
 }
 
 /* ==========================================
@@ -437,29 +463,25 @@
     font-size: 0.95rem;
   }
 
-  .risk-selector {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .risk-option {
-    flex-direction: row;
-    justify-content: flex-start;
-    padding: 18px 20px;
+  .risk-slider-container {
     gap: 16px;
   }
 
-  .risk-icon {
-    width: 44px;
-    height: 44px;
+  .risk-display {
+    padding: 16px 20px;
   }
 
-  .risk-label-text {
-    font-size: 1rem;
+  .risk-display-label {
+    font-size: 1.1rem;
   }
 
-  .risk-description {
-    text-align: left;
+  .risk-slider-labels span {
+    font-size: 0.8rem;
+  }
+
+  .risk-slider-track::after {
+    width: 24px;
+    height: 24px;
   }
 
   .ascend-button {
