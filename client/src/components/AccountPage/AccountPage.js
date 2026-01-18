@@ -257,7 +257,6 @@ function AccountPage({ user, onBack }) {
       });
       setProfileData(editedData);
       setSaveMessage('Profile saved successfully!');
-      setTimeout(() => setSaveMessage(''), 3000);
     } catch (error) {
       console.error('Error saving profile:', error);
       setSaveMessage('Failed to save profile. Please try again.');

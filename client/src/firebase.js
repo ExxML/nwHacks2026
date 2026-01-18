@@ -42,13 +42,29 @@ export const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
     
-    // Create or update user document in Firestore
-    await setDoc(doc(db, 'users', user.uid), {
-      displayName: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      lastLogin: serverTimestamp(),
-    }, { merge: true });
+    // Check if user document already exists
+    const userRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userRef);
+    
+    if (userDoc.exists()) {
+      // Existing user - just update login info
+      await setDoc(userRef, {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        lastLogin: serverTimestamp(),
+      }, { merge: true });
+    } else {
+      // New user - create document with profileCompleted set to false
+      await setDoc(userRef, {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        lastLogin: serverTimestamp(),
+        profileCompleted: false,
+        createdAt: serverTimestamp(),
+      });
+    }
     
     return user;
   } catch (error) {
@@ -136,9 +152,6 @@ export const saveUserProfile = async (userId, profileData) => {
   }
 };
 
-// Required profile fields that must be filled out
-const REQUIRED_PROFILE_FIELDS = ['age', 'location', 'propertyValue', 'vehicleValue', 'investments', 'debt', 'salary'];
-
 // Check if user has completed their profile
 export const checkProfileCompleted = async (userId) => {
   try {
@@ -147,25 +160,7 @@ export const checkProfileCompleted = async (userId) => {
     
     if (docSnap.exists()) {
       const data = docSnap.data();
-      
-      // Check if profileCompleted flag is set AND all required fields exist
-      if (data.profileCompleted !== true) {
-        return false;
-      }
-      
-      // Verify all required profile fields have values
-      const profile = data.profile;
-      if (!profile) {
-        return false;
-      }
-      
-      // Check each required field has a non-empty value
-      const allFieldsFilled = REQUIRED_PROFILE_FIELDS.every(field => {
-        const value = profile[field];
-        return value !== undefined && value !== null && value !== '';
-      });
-      
-      return allFieldsFilled;
+      return data.profileCompleted;
     }
     return false;
   } catch (error) {

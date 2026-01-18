@@ -26,17 +26,18 @@ function App() {
 
     // Listen for auth state changes
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
       // Ensure menu is closed when user changes
       setShowAccountMenu(false);
       setIsMenuClosing(false);
       
-      // Check if user has completed their profile
+      // Check if user has completed their profile before setting user state
       if (currentUser) {
         const isProfileComplete = await checkProfileCompleted(currentUser.uid);
         setProfileComplete(isProfileComplete);
+        setUser(currentUser);
       } else {
         setProfileComplete(false);
+        setUser(null);
       }
       setLoading(false);
     });
